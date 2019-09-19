@@ -55,58 +55,12 @@ int kbhit(void)
 		return ch;
 	}
 }
-std::mutex mutex;
-std::unique_ptr<Figure> owner;
-char ch;
-std::vector<std::vector<uint8_t>> points;
-
-void interaction(int offset, int maxX) {
-	while (true) {
-		while(ch = kbhit()) {
-			mutex.lock();
-			if (ch == 'q')
-				break;
-			if (ch == 'r') {
-			Orientation nextOrientation = owner->getNextOrientationType();
-			std::vector<std::vector<uint8_t>> nextPoints = owner->getNextPoints(nextOrientation);
-				owner->setNextPoints();
-				points = owner->getPoints();
-				refresh();
-				attrset(COLOR_PAIR(1));
-				init_pair(1, 3, 1);
-				for (int i = 0; i < points.size(); ++i) {
-					for (int j = 0; j < points[0].size(); ++j) {
-						if (points[i][j]) {
-							move(i + offset, j + maxX / 2);
-							printw(" ");
-						}
-					}
-				}
-//				clear();
-				refresh();
-				attrset(COLOR_PAIR(0));
-				for (int i = 0; i < points.size(); ++i) {
-					for (int j = 0; j < points[0].size(); ++j) {
-						if (points[i][j]) {
-							move(i + offset, j + maxX / 2);
-							printw(" ");
-						}
-					}
-				}
-				refresh();
-
-			}
-		}
-		mutex.unlock();
-		std::this_thread::sleep_for(std::chrono::milliseconds(5));
-
-	}
-
-}
 
 int main() {
 
-
+	std::unique_ptr<Figure> owner;
+	char ch;
+	std::vector<std::vector<uint8_t>> points;
 	owner.reset(dynamic_cast<Figure*>(new LLFigure));
 	if (owner != nullptr) {
 		owner->move();
@@ -131,16 +85,36 @@ int main() {
 	scrollok(stdscr, TRUE);
 	keypad(stdscr, TRUE);
 	getmaxyx(stdscr, maxY, maxX);
-	std::thread threadInteraction(interaction, offset, maxX);
-
+	auto start = std::chrono::system_clock::now();
 	while (true) {
-		mutex.lock();
 		getmaxyx(stdscr, maxY, maxX);
 //		printf("maxX = %d, maxY = %d", maxX, maxY);
 		start_color();
 		const Point orig(maxX / 2, 0);
 
+		while(ch = kbhit()) {
+			if (ch == 'q')
+				break;
+			if (ch == 'r') {
+				Orientation nextOrientation = owner->getNextOrientationType();
 
+				std::vector<std::vector<uint8_t>> nextPoints = owner->getNextPoints(nextOrientation);
+				owner->setNextPoints();
+				points = owner->getPoints();
+				refresh();
+				attrset(COLOR_PAIR(1));
+				init_pair(1, 3, 1);
+				for (int i = 0; i < points.size(); ++i) {
+					for (int j = 0; j < points[0].size(); ++j) {
+						if (points[i][j]) {
+							move(i + offset, j + maxX / 2);
+							printw(" ");
+						}
+					}
+				}
+				clear();
+			}
+		}
 		if (ch == 'q')
 			break;
 		refresh();
@@ -154,25 +128,27 @@ int main() {
 				}
 			}
 		}
+		auto end = std::chrono::system_clock::now();
+		std::chrono::duration<double> diff = end-start;
 		refresh();
-		mutex.unlock();
-		std::this_thread::sleep_for(std::chrono::milliseconds(400));
-		mutex.lock();
-		attrset(COLOR_PAIR(0));
-		for (int i = 0; i < points.size(); ++i) {
-			for (int j = 0; j < points[0].size(); ++j) {
-				if (points[i][j]) {
-					move(i + offset, j + maxX / 2);
-					printw(" ");
+//		std::cout << diff.count() << std::endl;
+		if (diff.count() > 1.0) {
+			start = std::chrono::system_clock::now();
+			diff.zero();
+			attrset(COLOR_PAIR(0));
+			for (int i = 0; i < points.size(); ++i) {
+				for (int j = 0; j < points[0].size(); ++j) {
+					if (points[i][j]) {
+						move(i + offset, j + maxX / 2);
+						printw(" ");
+					}
 				}
 			}
+			refresh();
+			++offset;
 		}
-		refresh();
-		++offset;
-		mutex.unlock();
 
 	}
-	threadInteraction.join();
 	endwin();
 //	init_pair(2, 4, 2);
 //	init_pair(3, 7, 4);
