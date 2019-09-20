@@ -43,18 +43,49 @@ void printRectangle(int startrow, int startcol, int height, int width)
 	}
 }
 
-int kbhit(void)
-{
+int kbhit() {
 	char ch;
-	if ((ch = getch()) == ERR) {
-//		std::cout << "ERR" << std::endl;
+	if ((ch = getch()) == ERR)
 		return 0;
-	}
-	else {
-//		std::cout << ch << std::endl;
+	else
 		return ch;
-	}
 }
+
+void rotate(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& points, int& offset, int& direction, int maxX) {
+	Orientation nextOrientation = owner->getNextOrientationType();
+	std::vector<std::vector<uint8_t>> nextPoints = owner->getNextPoints(nextOrientation);
+	owner->setNextPoints();
+	points = owner->getPoints();
+	refresh();
+	attrset(COLOR_PAIR(1));
+	init_pair(1, 3, 1);
+	for (int i = 0; i < points.size(); ++i) {
+		for (int j = 0; j < points[0].size(); ++j) {
+			if (points[i][j]) {
+				move(i + offset, j + maxX / 2 + direction);
+				printw(" ");
+			}
+		}
+	}
+	clear();
+}
+
+void draw(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& points, int& offset, int& direction, int maxX) {
+	points = owner->getPoints();
+	refresh();
+	attrset(COLOR_PAIR(1));
+	init_pair(1, 3, 1);
+	for (int i = 0; i < points.size(); ++i) {
+		for (int j = 0; j < points[0].size(); ++j) {
+			if (points[i][j]) {
+				move(i + offset, j + maxX / 2 + direction);
+				printw(" ");
+			}
+		}
+	}
+	clear();
+}
+
 
 int main() {
 
@@ -67,8 +98,6 @@ int main() {
 		owner->rotate();
 		bool verifying = owner->verifyDown();
 	}
-//	owner->setOrientationType(Orientation::First_0);
-//	owner->setPoints(Orientation::First_0);
 	points = owner->getPoints();
 
 //	std::cout << points.size() << " "<< points[0].size() << std::endl;
@@ -77,6 +106,7 @@ int main() {
 	int maxX = 0;
 	int maxY = 0;
 	int offset = 0;
+	int direction = 0;
 	curs_set(0);
 	cbreak();
 	noecho();
@@ -96,24 +126,27 @@ int main() {
 			if (ch == 'q')
 				break;
 			if (ch == 'r') {
-				Orientation nextOrientation = owner->getNextOrientationType();
-
-				std::vector<std::vector<uint8_t>> nextPoints = owner->getNextPoints(nextOrientation);
-				owner->setNextPoints();
-				points = owner->getPoints();
-				refresh();
-				attrset(COLOR_PAIR(1));
-				init_pair(1, 3, 1);
-				for (int i = 0; i < points.size(); ++i) {
-					for (int j = 0; j < points[0].size(); ++j) {
-						if (points[i][j]) {
-							move(i + offset, j + maxX / 2);
-							printw(" ");
-						}
-					}
-				}
-				clear();
+				rotate(owner, points, offset, direction, maxX);
 			}
+			switch (ch) {
+//				case KEY_UP:
+//					++direction;
+//					break;
+//				case KEY_LEFT:
+				case 's':
+					--direction;
+					break;
+//				case KEY_RIGHT:
+				case 'd':
+					++direction;
+					break;
+//				case KEY_DOWN:
+//					++offset;
+//					break;
+				default:
+					break;
+			}
+			draw(owner, points, offset, direction, maxX);
 		}
 		if (ch == 'q')
 			break;
@@ -123,7 +156,7 @@ int main() {
 		for (int i = 0; i < points.size(); ++i) {
 			for (int j = 0; j < points[0].size(); ++j) {
 				if (points[i][j]) {
-					move(i + offset, j + maxX / 2);
+					move(i + offset, j + maxX / 2 + direction);
 					printw(" ");
 				}
 			}
@@ -139,7 +172,7 @@ int main() {
 			for (int i = 0; i < points.size(); ++i) {
 				for (int j = 0; j < points[0].size(); ++j) {
 					if (points[i][j]) {
-						move(i + offset, j + maxX / 2);
+						move(i + offset, j + maxX / 2  + direction);
 						printw(" ");
 					}
 				}
