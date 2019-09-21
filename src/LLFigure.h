@@ -10,7 +10,7 @@ public:
 	void move();
 	void rotate();
 	void setNextPoints();
-	std::vector<std::vector<uint8_t>> getNextPoints(Orientation orientation);
+	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation);
 	~LLFigure();
 
 protected:

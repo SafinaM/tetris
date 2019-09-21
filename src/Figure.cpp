@@ -4,6 +4,7 @@
 #include "LLFigure.h"
 #include "LRFigure.h"
 #include "IFigure.h"
+#include "Movement.h"
 
 Figure::~Figure() {
 

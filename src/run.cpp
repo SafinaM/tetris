@@ -51,9 +51,9 @@ int kbhit() {
 		return ch;
 }
 
-void rotate(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& points, int& offset, int& direction, int maxX) {
+void rotate(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& points, const Movement& movement, int maxX) {
 	Orientation nextOrientation = owner->getNextOrientationType();
-	std::vector<std::vector<uint8_t>> nextPoints = owner->getNextPoints(nextOrientation);
+	std::vector<std::vector<uint8_t>> nextPoints = owner->getPoints(nextOrientation);
 	owner->setNextPoints();
 	points = owner->getPoints();
 	refresh();
@@ -62,7 +62,7 @@ void rotate(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& p
 	for (int i = 0; i < points.size(); ++i) {
 		for (int j = 0; j < points[0].size(); ++j) {
 			if (points[i][j]) {
-				move(i + offset, j + maxX / 2 + direction);
+				move(i + movement.getXOffset(), j + maxX / 2 + movement.getXOffset());
 				printw(" ");
 			}
 		}
@@ -70,15 +70,15 @@ void rotate(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& p
 	clear();
 }
 
-void draw(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& points, int& offset, int& direction, int maxX) {
-	points = owner->getPoints();
+void draw(std::unique_ptr<Figure>& owner, const Movement& movement, int maxX) {
+	auto points = owner->getPoints();
 	refresh();
 	attrset(COLOR_PAIR(1));
 	init_pair(1, 3, 1);
 	for (int i = 0; i < points.size(); ++i) {
 		for (int j = 0; j < points[0].size(); ++j) {
 			if (points[i][j]) {
-				move(i + offset, j + maxX / 2 + direction);
+				move(i + movement.getYOffset(), j + maxX / 2 + movement.getXOffset());
 				printw(" ");
 			}
 		}
@@ -93,6 +93,7 @@ int main() {
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
 	owner.reset(dynamic_cast<Figure*>(new LLFigure));
+	Movement movement;
 	if (owner != nullptr) {
 		owner->move();
 		owner->rotate();
@@ -105,8 +106,6 @@ int main() {
 	initscr();
 	int maxX = 0;
 	int maxY = 0;
-	int offset = 0;
-	int direction = 0;
 	curs_set(0);
 	cbreak();
 	noecho();
@@ -126,25 +125,24 @@ int main() {
 			if (ch == 'q')
 				break;
 			if (ch == 'r') {
-				rotate(owner, points, offset, direction, maxX);
+				rotate(owner, points, movement, maxX);
 			}
 			switch (ch) {
 				case KEY_UP:
-					++direction;
 					break;
 				case KEY_LEFT:
-					--direction;
+					movement.moveLeft();
 					break;
 				case KEY_RIGHT:
-					++direction;
+					movement.moveRight();
 					break;
 				case KEY_DOWN:
-					++offset;
+					movement.moveDown();
 					break;
 				default:
 					break;
 			}
-			draw(owner, points, offset, direction, maxX);
+			draw(owner, movement, maxX);
 		}
 		if (ch == 'q')
 			break;
@@ -154,7 +152,7 @@ int main() {
 		for (int i = 0; i < points.size(); ++i) {
 			for (int j = 0; j < points[0].size(); ++j) {
 				if (points[i][j]) {
-					move(i + offset, j + maxX / 2 + direction);
+					move(i + movement.getYOffset(), j + maxX / 2 + movement.getXOffset());
 					printw(" ");
 				}
 			}
@@ -162,21 +160,20 @@ int main() {
 		auto end = std::chrono::system_clock::now();
 		std::chrono::duration<double> diff = end-start;
 		refresh();
-//		std::cout << diff.count() << std::endl;
-		if (diff.count() > 1.0) {
+		if (diff.count() > 0.5) {
 			start = std::chrono::system_clock::now();
 			diff.zero();
 			attrset(COLOR_PAIR(0));
 			for (int i = 0; i < points.size(); ++i) {
 				for (int j = 0; j < points[0].size(); ++j) {
 					if (points[i][j]) {
-						move(i + offset, j + maxX / 2  + direction);
+						move(i + movement.getYOffset(), j + maxX / 2 + movement.getXOffset());
 						printw(" ");
 					}
 				}
 			}
 			refresh();
-			++offset;
+			movement.moveDown();
 		}
 
 	}

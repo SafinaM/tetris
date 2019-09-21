@@ -2,12 +2,9 @@
 #include <iostream>
 
 LLFigure::LLFigure() {
-	m_orientation = Orientation::First_0;
-	points = {{0, 1, 0},
-			  {0, 1, 0},
-			  {0, 1, 1}};
+	m_orientation = Orientation::Second_90;
+	points = getPoints(m_orientation);
 }
-
 
 void LLFigure::move() {
 //	std::cout << "LL move" << std::endl;
@@ -23,10 +20,10 @@ void LLFigure::rotate() {
 void LLFigure::setNextPoints() {
 //	std::cout << "LL setPoints" << std::endl;
 	setOrientationType(getNextOrientationType());
-	points = getNextPoints(m_orientation);
+	points = getPoints(m_orientation);
 }
 
-std::vector<std::vector<uint8_t>> LLFigure::getNextPoints(Orientation orientation) {
+std::vector<std::vector<uint8_t>> LLFigure::getPoints(Orientation orientation) {
 	switch (orientation) {
 		case Orientation::First_0: {
 			return {{0, 1, 0},
