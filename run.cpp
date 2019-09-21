@@ -44,7 +44,7 @@ void printRectangle(int startrow, int startcol, int height, int width)
 }
 
 int kbhit() {
-	char ch;
+	int ch;
 	if ((ch = getch()) == ERR)
 		return 0;
 	else
@@ -90,7 +90,7 @@ void draw(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& poi
 int main() {
 
 	std::unique_ptr<Figure> owner;
-	char ch;
+	int ch;
 	std::vector<std::vector<uint8_t>> points;
 	owner.reset(dynamic_cast<Figure*>(new LLFigure));
 	if (owner != nullptr) {
@@ -129,20 +129,18 @@ int main() {
 				rotate(owner, points, offset, direction, maxX);
 			}
 			switch (ch) {
-//				case KEY_UP:
-//					++direction;
-//					break;
-//				case KEY_LEFT:
-				case 's':
-					--direction;
-					break;
-//				case KEY_RIGHT:
-				case 'd':
+				case KEY_UP:
 					++direction;
 					break;
-//				case KEY_DOWN:
-//					++offset;
-//					break;
+				case KEY_LEFT:
+					--direction;
+					break;
+				case KEY_RIGHT:
+					++direction;
+					break;
+				case KEY_DOWN:
+					++offset;
+					break;
 				default:
 					break;
 			}
