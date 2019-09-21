@@ -14,5 +14,7 @@ include_directories(${CURSES_INCLUDE_DIR})
 
 add_executable(curses main.cpp)
 add_executable(run run.cpp Figure.h LLFigure.cpp LRFigure.cpp Figure.cpp IFigure.cpp Movement.cpp)
+add_executable(test test.cpp Figure.h LLFigure.cpp LRFigure.cpp Figure.cpp IFigure.cpp Movement.cpp Board.cpp)
 target_link_libraries(run ${CURSES_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(test ${CURSES_LIBRARIES})
 target_link_libraries(curses ${CURSES_LIBRARIES})

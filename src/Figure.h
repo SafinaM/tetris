@@ -9,7 +9,7 @@ class Figure {
 public:
 
 	bool verifyDown();
-	std::vector<std::vector<uint8_t>> getPoints();
+	std::vector<std::vector<uint8_t>> getPoints() const;
 
 	virtual void move() = 0;
 	virtual void rotate() = 0;
@@ -20,7 +20,7 @@ public:
 	void setOrientationType(Orientation orientation);
 	virtual ~Figure();
 	
-	friend class Movement;
+	friend class Board;
 
 protected:
 	std::vector<std::vector<uint8_t>> points;

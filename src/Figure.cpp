@@ -14,7 +14,7 @@ void Figure::setOrientationType(Orientation orientation) {
 	m_orientation = orientation;
 }
 
-std::vector<std::vector<uint8_t>> Figure::getPoints() {
+std::vector<std::vector<uint8_t>> Figure::getPoints() const {
 	assert(points.size() != 0);
 	return points;
 }

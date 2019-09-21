@@ -12,6 +12,7 @@
 #include "LRFigure.h"
 #include "IFigure.h"
 #include "Point.h"
+#include "Board.h"
 
 
 void printTriangle(int startrow, int startcol, int height)
@@ -88,7 +89,7 @@ void draw(std::unique_ptr<Figure>& owner, const Movement& movement, int maxX) {
 
 
 int main() {
-
+	std::cout << Board::widthBoard << " " << Board::heightBoard << std::endl;
 	std::unique_ptr<Figure> owner;
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
