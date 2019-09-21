@@ -4,10 +4,6 @@
 #include "Figure.h"
 #include "LLFigure.h"
 
-using namespace std;
-
-
-
 int main() {
 //	Singleton* p1 = Singleton::getInstance();
 	Board& board = Board::instance();
