@@ -2,10 +2,9 @@
 
 #include "Figure.h"
 
-class IFigure : public Figure {
+struct LRFigure : Figure {
 public:
 	void move();
 	void rotate();
-	~IFigure();
+	~LRFigure();
 };
-

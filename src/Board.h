@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "Singletone.h"
-#include "Figure.h"
+#include "helpers/Singletone.h"
+#include "figures/Figure.h"
 
 struct Board final: Singleton<Board> {
 

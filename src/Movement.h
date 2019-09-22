@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "Figure.h"
+#include "figures/Figure.h"
 
 struct Movement {
 	Movement() = default;

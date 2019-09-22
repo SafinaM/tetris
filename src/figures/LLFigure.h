@@ -4,8 +4,7 @@
 #include <cstdint>
 #include "enums.h"
 
-class LLFigure : public Figure {
-public:
+struct LLFigure : Figure {
 	LLFigure();
 	void move();
 	void rotate();

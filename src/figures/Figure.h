@@ -3,11 +3,9 @@
 #include <vector>
 #include <cstdint>
 #include "enums.h"
-#include "Movement.h"
+#include "../Movement.h"
 
-class Figure {
-public:
-
+struct Figure {
 	bool verifyDown();
 	std::vector<std::vector<uint8_t>> getPoints() const;
 

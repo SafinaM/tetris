@@ -2,8 +2,8 @@
 #include <iostream>
 #include <memory>
 #include <cassert>
-#include "Figure.h"
-#include "LLFigure.h"
+#include "figures/Figure.h"
+#include "figures/LLFigure.h"
 
 
 int main() {

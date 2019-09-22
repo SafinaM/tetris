@@ -7,11 +7,11 @@
 #include <mutex>
 #include <zconf.h>
 
-#include "Figure.h"
-#include "LLFigure.h"
-#include "LRFigure.h"
-#include "IFigure.h"
-#include "Point.h"
+#include "figures/Figure.h"
+#include "figures/LLFigure.h"
+#include "figures/LRFigure.h"
+#include "figures/IFigure.h"
+#include "helpers/Point.h"
 #include "Board.h"
 
 
