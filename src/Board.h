@@ -23,8 +23,9 @@ struct Board final: Singleton<Board> {
 	// for debug
 	void setLine(uint32_t numY, uint32_t value = 1);
 	void setPoint(uint32_t x, uint32_t y, uint32_t value = 1);
-private:
+	// public for tests
 	bool verifyLine(uint32_t numY);
+private:
 	void swapLines(uint32_t i, uint32_t j);
 	void resetLine(uint32_t numY);
 };

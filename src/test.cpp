@@ -1,26 +1,30 @@
 #include "Board.h"
 #include <iostream>
 #include <memory>
+#include <cassert>
 #include "Figure.h"
 #include "LLFigure.h"
 
+
 int main() {
-//	Singleton* p1 = Singleton::getInstance();
 	Board& board = Board::instance();
-//	board.clear();
-//	board.debugPrint();
-	Figure* figure = new LLFigure;
+	std::unique_ptr<Figure> figure(new LLFigure);
+	assert(figure);
 	Movement movement;
 //	movement.moveRight();
 //	movement.moveLeft();
 	movement.moveDown();
+	assert(movement.getYOffset() == 1);
 	movement.moveDown();
+	assert(movement.getYOffset() == 2);
 	movement.moveDown();
-	if (figure) {
-		board.addFigureToBuffer(*figure, movement);
-	}
+	assert(movement.getYOffset() == 3);
+	
+	board.addFigureToBuffer(*figure, movement);
 	
 	movement.set(3, 3);
+	assert(movement.getXOffset() == 3);
+	assert(movement.getYOffset() == 3);
 	board.addFigureToBuffer(*figure, movement);
 	
 	movement.set(6, 3);
@@ -30,15 +34,16 @@ int main() {
 	movement.set(8, 2);
 	board.addFigureToBuffer(*figure, movement);
 	figure->setNextPoints();
-	
-
-	
 	board.setLine(5);
+	assert(board.verifyLine(5));
 	board.setLine(6);
-//	board.setLine(5);
+	assert(!board.verifyLine(7));
 	board.debugPrint();
 	
 	board.verifyLines();
-	std::cout << std::endl;
-	board.debugPrint();
+	// after verifying we do not have filled lines
+	for (auto i = 0; i < Board::heightBoard; ++i) {
+		assert(!board.verifyLine(i));
+	}
+
 }
