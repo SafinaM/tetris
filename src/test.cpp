@@ -30,10 +30,15 @@ int main() {
 	movement.set(8, 2);
 	board.addFigureToBuffer(*figure, movement);
 	figure->setNextPoints();
+	
+
+	
+	board.setLine(5);
+	board.setLine(6);
+//	board.setLine(5);
 	board.debugPrint();
 	
 	board.verifyLines();
 	std::cout << std::endl;
 	board.debugPrint();
-	
 }

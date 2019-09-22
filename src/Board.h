@@ -11,20 +11,21 @@ struct Board final: Singleton<Board> {
 
 	constexpr static uint32_t widthBoard = 10;
 	constexpr static uint32_t heightBoard = 20;
-	std::vector<std::vector<uint8_t>> buffer;
-	uint32_t m_lastChangedY = 0;
+	uint8_t buffer[heightBoard][widthBoard] = {};
+	uint32_t m_minNoneZeroY = heightBoard;
 	
 	Board(token) {
-		// matrix of size width x height initialized by 0
-		std::vector<std::vector<uint8_t>> tmp(heightBoard, std::vector<uint8_t>(widthBoard, 0));
-		std::swap(buffer, tmp);
 	}
 	~Board() {}
-	
-	void debugPrint() const;
-	
 	void addFigureToBuffer(const Figure& figure, const Movement& movement);
-	bool verifyLine(uint32_t numY);
+	void debugPrint() const;
 	void verifyLines();
+	// for debug
+	void setLine(uint32_t numY, uint32_t value = 1);
+	void setPoint(uint32_t x, uint32_t y, uint32_t value = 1);
+private:
+	bool verifyLine(uint32_t numY);
+	void swapLines(uint32_t i, uint32_t j);
+	void resetLine(uint32_t numY);
 };
 

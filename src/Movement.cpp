@@ -11,7 +11,7 @@ void Movement::moveLeft() noexcept {
 void Movement::moveDown() noexcept {
 	++m_offsetY;
 }
-
+// for debug
 void Movement::set(uint32_t x, uint32_t y) noexcept {
 	m_offsetX = x;
 	m_offsetY = y;
