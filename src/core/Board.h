@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "helpers/Singletone.h"
-#include "figures/Figure.h"
+#include <Singletone.h>
+#include <Figure.h>
 
 struct Board final: Singleton<Board> {
 
@@ -17,7 +17,7 @@ struct Board final: Singleton<Board> {
 	Board(token) {
 	}
 	~Board() {}
-	void addFigureToBuffer(const Figure& figure, const Movement& movement);
+	void addFigureToBuffer(const Figure& figure);
 	void debugPrint() const;
 	void verifyLines();
 	// for debug

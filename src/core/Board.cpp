@@ -11,10 +11,10 @@ void Board::debugPrint() const {
 	}
 }
 
-void Board::addFigureToBuffer(const Figure& figure, const Movement& movement) {
+void Board::addFigureToBuffer(const Figure& figure) {
 	const auto& points = figure.points;
-	uint32_t xOffset = movement.getXOffset();
-	uint32_t yOffset = movement.getYOffset();
+	uint32_t xOffset = figure.getXOffset();
+	uint32_t yOffset = figure.getYOffset();
 	assert(xOffset < widthBoard);
 	assert(yOffset >= 0 && yOffset < heightBoard);
 	for (auto i = 0; i < points.size(); ++i) {

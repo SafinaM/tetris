@@ -6,8 +6,6 @@
 
 struct LLFigure : Figure {
 	LLFigure();
-	void move();
-	void rotate();
 	void setNextPoints();
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation);
 	~LLFigure();

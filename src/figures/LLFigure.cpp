@@ -6,19 +6,7 @@ LLFigure::LLFigure() {
 	points = getPoints(m_orientation);
 }
 
-void LLFigure::move() {
-//	std::cout << "LL move" << std::endl;
-	return;
-}
-
-void LLFigure::rotate() {
-//	std::cout << "LL rotate" << std::endl;
-
-	return;
-}
-
 void LLFigure::setNextPoints() {
-//	std::cout << "LL setPoints" << std::endl;
 	setOrientationType(getNextOrientationType());
 	points = getPoints(m_orientation);
 }

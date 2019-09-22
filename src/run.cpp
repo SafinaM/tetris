@@ -1,48 +1,16 @@
 #include <curses.h>
-#include <stdlib.h>
 
 #include <memory>
 #include <iostream>
 #include <thread>
 #include <mutex>
-#include <zconf.h>
+#include <Figure.h>
+#include <LLFigure.h>
+#include <LRFigure.h>
+#include <IFigure.h>
+#include <Point.h>
+#include <Board.h>
 
-#include "figures/Figure.h"
-#include "figures/LLFigure.h"
-#include "figures/LRFigure.h"
-#include "figures/IFigure.h"
-#include "helpers/Point.h"
-#include "Board.h"
-
-
-void printTriangle(int startrow, int startcol, int height)
-{
-	int x=startcol;
-
-	for(int r = startrow; r <= startrow + height; r++)
-	{
-		for(int c = startcol; c <= x; c++)
-		{
-			move(r, c);
-			printw(" ");
-		}
-		x++;
-		startcol--;
-	}
-
-}
-
-void printRectangle(int startrow, int startcol, int height, int width)
-{
-	for(int r = startrow; r <= startrow+height; r++)
-	{
-		for(int c=startcol; c <= startcol+width; c++)
-		{
-			move(r, c);
-			printw(" ");
-		}
-	}
-}
 
 int kbhit() {
 	int ch;
@@ -52,7 +20,7 @@ int kbhit() {
 		return ch;
 }
 
-void rotate(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& points, const Movement& movement, int maxX) {
+void rotate(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& points, int maxX) {
 	Orientation nextOrientation = owner->getNextOrientationType();
 	std::vector<std::vector<uint8_t>> nextPoints = owner->getPoints(nextOrientation);
 	owner->setNextPoints();
@@ -63,7 +31,7 @@ void rotate(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& p
 	for (int i = 0; i < points.size(); ++i) {
 		for (int j = 0; j < points[0].size(); ++j) {
 			if (points[i][j]) {
-				move(i + movement.getXOffset(), j + maxX / 2 + movement.getXOffset());
+				move(i + owner->getXOffset(), j + maxX / 2 + owner->getXOffset());
 				printw(" ");
 			}
 		}
@@ -71,7 +39,7 @@ void rotate(std::unique_ptr<Figure>& owner, std::vector<std::vector<uint8_t>>& p
 	clear();
 }
 
-void draw(std::unique_ptr<Figure>& owner, const Movement& movement, int maxX) {
+void draw(std::unique_ptr<Figure>& owner, int maxX) {
 	auto points = owner->getPoints();
 	refresh();
 	attrset(COLOR_PAIR(1));
@@ -79,7 +47,7 @@ void draw(std::unique_ptr<Figure>& owner, const Movement& movement, int maxX) {
 	for (int i = 0; i < points.size(); ++i) {
 		for (int j = 0; j < points[0].size(); ++j) {
 			if (points[i][j]) {
-				move(i + movement.getYOffset(), j + maxX / 2 + movement.getXOffset());
+				move(i + owner->getYOffset(), j + maxX / 2 + owner->getXOffset());
 				printw(" ");
 			}
 		}
@@ -94,10 +62,7 @@ int main() {
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
 	owner.reset(dynamic_cast<Figure*>(new LLFigure));
-	Movement movement;
 	if (owner != nullptr) {
-		owner->move();
-		owner->rotate();
 		bool verifying = owner->verifyDown();
 	}
 	points = owner->getPoints();
@@ -126,24 +91,24 @@ int main() {
 			if (ch == 'q')
 				break;
 			if (ch == 'r') {
-				rotate(owner, points, movement, maxX);
+				rotate(owner, points, maxX);
 			}
 			switch (ch) {
 				case KEY_UP:
 					break;
 				case KEY_LEFT:
-					movement.moveLeft();
+					owner->moveLeft();
 					break;
 				case KEY_RIGHT:
-					movement.moveRight();
+					owner->moveRight();
 					break;
 				case KEY_DOWN:
-					movement.moveDown();
+					owner->moveDown();
 					break;
 				default:
 					break;
 			}
-			draw(owner, movement, maxX);
+			draw(owner, maxX);
 		}
 		if (ch == 'q')
 			break;
@@ -153,7 +118,7 @@ int main() {
 		for (int i = 0; i < points.size(); ++i) {
 			for (int j = 0; j < points[0].size(); ++j) {
 				if (points[i][j]) {
-					move(i + movement.getYOffset(), j + maxX / 2 + movement.getXOffset());
+					move(i + owner->getYOffset(), j + maxX / 2 + owner->getXOffset());
 					printw(" ");
 				}
 			}
@@ -168,13 +133,13 @@ int main() {
 			for (int i = 0; i < points.size(); ++i) {
 				for (int j = 0; j < points[0].size(); ++j) {
 					if (points[i][j]) {
-						move(i + movement.getYOffset(), j + maxX / 2 + movement.getXOffset());
+						move(i + owner->getYOffset(), j + maxX / 2 + owner->getXOffset());
 						printw(" ");
 					}
 				}
 			}
 			refresh();
-			movement.moveDown();
+			owner->moveDown();
 		}
 
 	}

@@ -4,8 +4,6 @@
 
 struct IFigure : Figure {
 public:
-	void move();
-	void rotate();
 	~IFigure();
 };
 

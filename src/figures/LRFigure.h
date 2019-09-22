@@ -4,7 +4,5 @@
 
 struct LRFigure : Figure {
 public:
-	void move();
-	void rotate();
 	~LRFigure();
 };

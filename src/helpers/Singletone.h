@@ -18,6 +18,6 @@ protected:
 template<typename T>
 T& Singleton<T>::instance()
 {
-	static const std::unique_ptr<T> instance{new T{token{}}};
-	return *instance;
+	static T instance{token{}};
+	return instance;
 }
