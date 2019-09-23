@@ -26,10 +26,14 @@ struct Board final: Singleton<Board> {
 	// public for tests
 	bool verifyLine(uint32_t numY);
 	
-	bool isMovable();
-	bool isRotateable();
+	bool isMovable(Direction direction, const Figure &figure) const;
+	bool isRotatable(const Figure& figure) const;
 private:
 	void swapLines(uint32_t i, uint32_t j);
 	void resetLine(uint32_t numY);
+	bool isCrossed(
+		const std::vector<std::vector<uint8_t>>& points,
+		int xOffset,
+		int yOffset) const;
 };
 

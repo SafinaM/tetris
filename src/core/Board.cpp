@@ -78,3 +78,51 @@ void Board::setLine(uint32_t numY, uint32_t value) {
 void Board::setPoint(uint32_t x, uint32_t y, uint32_t value) {
 	buffer[y][x] = value;
 }
+
+bool Board::isRotatable(const Figure& figure) const {
+	Orientation orientation = figure.getNextOrientationType();
+	auto points = figure.getPoints(orientation);
+	uint32_t xOffset = figure.getXOffset();
+	uint32_t yOffset = figure.getYOffset();
+	
+	assert(xOffset < widthBoard);
+	assert(yOffset >= 0 && yOffset < heightBoard);
+	return isCrossed(points, xOffset, yOffset);
+}
+
+bool Board::isCrossed(
+	const std::vector<std::vector<uint8_t>>& points,
+	int xOffset,
+	int yOffset) const {
+	for (auto i = 0; i < points.size(); ++i) {
+		for (auto j = 0; j < points[0].size(); ++j) {
+			// if buffer elements points are busy we cannot do this action
+			if (points[i][j] && buffer[i + yOffset][j + xOffset]) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool Board::isMovable(Direction direction, const Figure &figure) const {
+	const auto& points = figure.points;
+	uint32_t xOffset = figure.getXOffset();
+	uint32_t yOffset = figure.getYOffset();
+	
+	assert(xOffset < widthBoard);
+	assert(yOffset >= 0 && yOffset < heightBoard);
+	
+	if (direction == Direction::Rigth) {
+		++xOffset;
+	} else if (direction == Direction::Left) {
+		--xOffset;
+	} else if (direction == Direction::Down){
+		++yOffset;
+	}
+	// border intersection
+	if (xOffset < 0 || xOffset >= widthBoard || yOffset >= heightBoard)
+		return false;
+	
+	return isCrossed(points, xOffset, yOffset);
+}

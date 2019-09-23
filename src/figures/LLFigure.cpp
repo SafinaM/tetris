@@ -11,7 +11,7 @@ void LLFigure::setNextPoints() {
 	points = getPoints(m_orientation);
 }
 
-std::vector<std::vector<uint8_t>> LLFigure::getPoints(Orientation orientation) {
+std::vector<std::vector<uint8_t>> LLFigure::getPoints(Orientation orientation) const {
 	switch (orientation) {
 		case Orientation::First_0: {
 			return {{0, 1, 0},
@@ -36,7 +36,7 @@ std::vector<std::vector<uint8_t>> LLFigure::getPoints(Orientation orientation) {
 	}
 }
 
-Orientation LLFigure::getNextOrientationType() {
+Orientation LLFigure::getNextOrientationType() const noexcept{
 	switch (m_orientation) {
 		case Orientation::First_0: {
 			return Orientation:: Second_90;

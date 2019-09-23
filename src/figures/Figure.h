@@ -8,9 +8,9 @@ struct Figure {
 	bool verifyDown();
 	std::vector<std::vector<uint8_t>> getPoints() const;
 	
-	virtual std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) = 0;
+	virtual std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const = 0;
 	virtual void setNextPoints() = 0;
-	virtual Orientation getNextOrientationType() = 0;
+	virtual Orientation getNextOrientationType() const noexcept = 0;
 
 	void setOrientationType(Orientation orientation);
 	virtual ~Figure();

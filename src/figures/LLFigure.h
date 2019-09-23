@@ -7,9 +7,9 @@
 struct LLFigure : Figure {
 	LLFigure();
 	void setNextPoints();
-	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation);
+	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const;
 	~LLFigure();
 
 protected:
-	Orientation getNextOrientationType();
+	Orientation getNextOrientationType() const noexcept;
 };
