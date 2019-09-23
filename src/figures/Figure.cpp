@@ -23,17 +23,16 @@ bool Figure::verifyDown() {
 	return true;
 }
 
-void Figure::moveRight() noexcept {
-	++m_offsetX;
+void Figure::move(Direction direction) noexcept {
+	if (direction == Direction::Rigth) {
+		++m_offsetX;
+	} else if (direction == Direction::Left) {
+		--m_offsetX;
+	} else if (direction == Direction::Down) {
+		++m_offsetY;
+	}
 }
 
-void Figure::moveLeft() noexcept {
-	--m_offsetX;
-}
-
-void Figure::moveDown() noexcept {
-	++m_offsetY;
-}
 // for debug
 void Figure::setXY(uint32_t x, uint32_t y) noexcept {
 	m_offsetX = x;

@@ -25,6 +25,9 @@ struct Board final: Singleton<Board> {
 	void setPoint(uint32_t x, uint32_t y, uint32_t value = 1);
 	// public for tests
 	bool verifyLine(uint32_t numY);
+	
+	bool isMovable();
+	bool isRotateable();
 private:
 	void swapLines(uint32_t i, uint32_t j);
 	void resetLine(uint32_t numY);

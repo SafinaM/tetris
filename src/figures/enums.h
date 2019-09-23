@@ -7,3 +7,9 @@ enum struct Orientation: int {
 	Fourth_270
 };
 
+enum struct Direction: int {
+	Left = 0,
+	Rigth,
+	Down
+};
+

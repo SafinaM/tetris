@@ -97,13 +97,13 @@ int main() {
 				case KEY_UP:
 					break;
 				case KEY_LEFT:
-					owner->moveLeft();
+					owner->move(Direction::Left);
 					break;
 				case KEY_RIGHT:
-					owner->moveRight();
+					owner->move(Direction::Rigth);
 					break;
 				case KEY_DOWN:
-					owner->moveDown();
+					owner->move(Direction::Down);
 					break;
 				default:
 					break;
@@ -139,7 +139,7 @@ int main() {
 				}
 			}
 			refresh();
-			owner->moveDown();
+			owner->move(Direction::Down);
 		}
 
 	}

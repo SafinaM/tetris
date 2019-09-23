@@ -10,13 +10,11 @@ int main() {
 	Board& board = Board::instance();
 	std::unique_ptr<Figure> figure(new LLFigure);
 	assert(figure);
-//	movement.moveRight();
-//	movement.moveLeft();
-	figure->moveDown();
+	figure->move(Direction::Down);
 	assert(figure->getYOffset() == 1);
-	figure->moveDown();
+	figure->move(Direction::Down);
 	assert(figure->getYOffset() == 2);
-	figure->moveDown();
+	figure->move(Direction::Down);
 	assert(figure->getYOffset() == 3);
 	
 	board.addFigureToBuffer(*figure);
@@ -47,5 +45,5 @@ int main() {
 	}
 	std::cout << std::endl;
 	board.debugPrint();
-
+	
 }
