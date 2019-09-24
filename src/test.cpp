@@ -44,6 +44,12 @@ int main() {
 		assert(!board.verifyLine(i));
 	}
 	std::cout << std::endl;
+	figure->setXY(0, 1);
+//	board.addFigureToBuffer(*figure);
 	board.debugPrint();
+	
+	assert(board.allowMove(Direction::Right, *figure) == true);
+	assert(board.allowMove(Direction::Left, *figure) == false);
+	assert(board.allowMove(Direction::Down, *figure) == true);
 	
 }

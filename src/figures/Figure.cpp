@@ -24,7 +24,7 @@ bool Figure::verifyDown() {
 }
 
 void Figure::move(Direction direction) noexcept {
-	if (direction == Direction::Rigth) {
+	if (direction == Direction::Right) {
 		++m_offsetX;
 	} else if (direction == Direction::Left) {
 		--m_offsetX;

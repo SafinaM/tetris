@@ -100,7 +100,7 @@ int main() {
 					owner->move(Direction::Left);
 					break;
 				case KEY_RIGHT:
-					owner->move(Direction::Rigth);
+					owner->move(Direction::Right);
 					break;
 				case KEY_DOWN:
 					owner->move(Direction::Down);

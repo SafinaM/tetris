@@ -9,7 +9,7 @@ enum struct Orientation: int {
 
 enum struct Direction: int {
 	Left = 0,
-	Rigth,
+	Right,
 	Down
 };
 
