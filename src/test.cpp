@@ -9,6 +9,7 @@
 int main() {
 	Board& board = Board::instance();
 	std::unique_ptr<Figure> figure(new LLFigure);
+	
 	assert(figure);
 	figure->move(Direction::Down);
 	assert(figure->getYOffset() == 1);
@@ -44,8 +45,9 @@ int main() {
 		assert(!board.verifyLine(i));
 	}
 	std::cout << std::endl;
-	figure->setXY(0, 1);
-//	board.addFigureToBuffer(*figure);
+	figure->setNextPoints();
+	figure->setXY(-1, 0);
+	board.addFigureToBuffer(*figure);
 	board.debugPrint();
 	
 	assert(board.allowMove(Direction::Right, *figure) == true);

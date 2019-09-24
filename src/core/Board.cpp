@@ -143,8 +143,8 @@ bool Board::allowMove(Direction direction, const Figure &figure) const {
 		++yOffset;
 	}
 	// border intersection
-	if (xOffset < 0 || xOffset >= widthBoard || yOffset >= heightBoard)
-		return false;
+//	if (xOffset < 0 || xOffset >= widthBoard || yOffset >= heightBoard)
+//		return false;
 	
 	return
 		isCrossedFigureWithBuffer(points, xOffset, yOffset) &&
