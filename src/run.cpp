@@ -3,7 +3,6 @@
 #include <memory>
 #include <iostream>
 #include <thread>
-#include <mutex>
 #include <Figure.h>
 #include <LLFigure.h>
 #include <LRFigure.h>

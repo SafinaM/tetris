@@ -40,7 +40,7 @@ int main() {
 	assert(!board.verifyLine(7));
 	
 	board.verifyLines();
-	// after verifying we do not have filled lines
+	// after checking we do not have filled lines
 	for (auto i = 0; i < Board::heightBoard; ++i) {
 		assert(!board.verifyLine(i));
 	}

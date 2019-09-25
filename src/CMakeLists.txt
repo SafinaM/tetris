@@ -25,6 +25,7 @@ file(GLOB SOURCES figures/*.cpp core/*.cpp)
 message(${SOURCES})
 add_executable(run run.cpp ${SOURCES})
 add_executable(test test.cpp ${SOURCES})
+add_executable(run_with_rlutil run_rl.cpp ${SOURCES})
 
 # TODO here replace ncurses to rlutil.h - header only lib
 target_link_libraries(run ${CURSES_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
