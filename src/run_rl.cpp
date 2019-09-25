@@ -1,4 +1,5 @@
 #include <memory>
+#include <thread>
 #include <iostream>
 #include <Figure.h>
 #include <LLFigure.h>
@@ -7,15 +8,6 @@
 #include <Point.h>
 #include <Board.h>
 #include <rlutil.h>
-
-
-int kbhit() {
-	int ch;
-	if ((ch = getch()) == ERR)
-		return 0;
-	else
-		return ch;
-}
 
 int main() {
 	std::cout << Board::widthBoard << " " << Board::heightBoard << std::endl;
@@ -38,24 +30,23 @@ int main() {
 			if (ch == 'q')
 				break;
 			if (ch == 'r') {
-				rotate(owner, points, maxX);
+//				rotate(owner, points, maxX);
 			}
 			switch (ch) {
-				case KEY_UP:
+				case rlutil::KEY_UP:
 					break;
-				case KEY_LEFT:
+				case rlutil::KEY_LEFT:
 					owner->move(Direction::Left);
 					break;
-				case KEY_RIGHT:
+				case rlutil::KEY_RIGHT:
 					owner->move(Direction::Right);
 					break;
-				case KEY_DOWN:
+				case rlutil::KEY_DOWN:
 					owner->move(Direction::Down);
 					break;
 				default:
 					break;
 			}
-			draw(owner, maxX);
 		}
 		if (ch == 'q')
 			break;
