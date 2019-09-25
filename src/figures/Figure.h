@@ -15,7 +15,7 @@ struct Figure {
 	void setOrientationType(Orientation orientation);
 	virtual ~Figure();
 	void move(Direction direction) noexcept;
-	void setXY(uint32_t x, uint32_t y) noexcept;
+	void setXY(int x, int y) noexcept;
 	int getXOffset() const noexcept;
 	int getYOffset() const noexcept;
 	void resetOffset() noexcept;

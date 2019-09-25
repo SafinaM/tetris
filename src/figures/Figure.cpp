@@ -34,7 +34,7 @@ void Figure::move(Direction direction) noexcept {
 }
 
 // for debug
-void Figure::setXY(uint32_t x, uint32_t y) noexcept {
+void Figure::setXY(int x, int y) noexcept {
 	m_offsetX = x;
 	m_offsetY = y;
 }

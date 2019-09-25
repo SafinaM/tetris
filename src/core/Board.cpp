@@ -13,10 +13,8 @@ void Board::debugPrint() const {
 
 void Board::addFigureToBuffer(const Figure& figure) {
 	const auto& points = figure.points;
-	uint32_t xOffset = figure.getXOffset();
-	uint32_t yOffset = figure.getYOffset();
-	assert(xOffset < widthBoard);
-	assert(yOffset >= 0 && yOffset < heightBoard);
+	int xOffset = figure.getXOffset();
+	int yOffset = figure.getYOffset();
 	for (auto i = 0; i < points.size(); ++i) {
 		for (auto j = 0; j < points[0].size(); ++j) {
 			if (points[i][j]) {
@@ -85,8 +83,6 @@ bool Board::allowRotate(const Figure &figure) const {
 	uint32_t xOffset = figure.getXOffset();
 	uint32_t yOffset = figure.getYOffset();
 	
-	assert(xOffset < widthBoard);
-	assert(yOffset >= 0 && yOffset < heightBoard);
 	return
 		isCrossedFigureWithBuffer(points, xOffset, yOffset) &&
 		isCrossedFigureWithWalls(points, xOffset, yOffset);
@@ -124,7 +120,6 @@ bool Board::isCrossedFigureWithWalls(
 		}
 	}
 	return true;
-	
 }
 
 bool Board::allowMove(Direction direction, const Figure &figure) const {
@@ -132,20 +127,15 @@ bool Board::allowMove(Direction direction, const Figure &figure) const {
 	uint32_t xOffset = figure.getXOffset();
 	uint32_t yOffset = figure.getYOffset();
 	
-	assert(xOffset < widthBoard);
-	assert(yOffset >= 0 && yOffset < heightBoard);
-	
 	if (direction == Direction::Right) {
 		++xOffset;
 	} else if (direction == Direction::Left) {
 		--xOffset;
 	} else if (direction == Direction::Down){
 		++yOffset;
+	} else {
+		std::cerr << "User error: unsupported direction type." << std::endl;
 	}
-	// border intersection
-//	if (xOffset < 0 || xOffset >= widthBoard || yOffset >= heightBoard)
-//		return false;
-	
 	return
 		isCrossedFigureWithBuffer(points, xOffset, yOffset) &&
 		isCrossedFigureWithWalls(points, xOffset, yOffset);
