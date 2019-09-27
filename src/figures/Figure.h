@@ -19,6 +19,7 @@ struct Figure {
 	int getXOffset() const noexcept;
 	int getYOffset() const noexcept;
 	void resetOffset() noexcept;
+	void debugPrint() noexcept;
 	
 	friend class Board;
 

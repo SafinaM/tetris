@@ -51,3 +51,13 @@ void Figure::resetOffset()  noexcept {
 	m_offsetX = 0;
 	m_offsetY = 0;
 }
+
+void Figure::debugPrint() noexcept {
+	assert(!points.empty());
+	for (int i = 0; i < points.size(); ++i) {
+		for (int j = 0; j < points[0].size(); ++j) {
+			std::cout << +points[i][j];
+		}
+		std::cout << std::endl;
+	}
+}
