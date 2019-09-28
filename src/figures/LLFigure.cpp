@@ -4,6 +4,7 @@
 LLFigure::LLFigure() {
 	m_orientation = Orientation::Second_90;
 	points = getPoints(m_orientation);
+	m_Color = 3; // Cyan
 }
 
 void LLFigure::setNextPoints() {

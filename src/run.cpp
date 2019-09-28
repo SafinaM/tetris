@@ -61,9 +61,6 @@ int main() {
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
 	owner.reset(dynamic_cast<Figure*>(new LLFigure));
-	if (owner != nullptr) {
-		bool verifying = owner->verifyDown();
-	}
 	points = owner->getPoints();
 
 //	std::cout << points.size() << " "<< points[0].size() << std::endl;

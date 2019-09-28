@@ -5,7 +5,6 @@
 #include "enums.h"
 
 struct Figure {
-	bool verifyDown();
 	std::vector<std::vector<uint8_t>> getPoints() const;
 	
 	virtual std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const = 0;
@@ -20,6 +19,7 @@ struct Figure {
 	int getYOffset() const noexcept;
 	void resetOffset() noexcept;
 	void debugPrint() noexcept;
+	uint32_t getColor() const noexcept;
 	
 	friend class Board;
 
@@ -29,4 +29,5 @@ protected:
 	Orientation m_orientation;
 	int m_offsetX = 0;
 	int m_offsetY = 0;
+	uint32_t m_Color = 0;
 };

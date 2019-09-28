@@ -21,7 +21,7 @@ set(CMAKE_CXX_FLAGS "-lncurses")
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})
 
-file(GLOB SOURCES figures/*.cpp core/*.cpp)
+file(GLOB SOURCES figures/*.cpp core/*.cpp painter/*.cpp)
 message(${SOURCES})
 add_executable(run run.cpp ${SOURCES})
 add_executable(test test.cpp ${SOURCES})

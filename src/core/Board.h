@@ -12,7 +12,6 @@ struct Board final: Singleton<Board> {
 	constexpr static uint32_t widthBoard = 10;
 	constexpr static uint32_t heightBoard = 20;
 	uint8_t buffer[heightBoard][widthBoard] = {};
-	uint32_t m_minNoneZeroY = heightBoard;
 	
 	Board(token) {
 	}
@@ -30,6 +29,7 @@ struct Board final: Singleton<Board> {
 	bool allowRotate(const Figure &figure) const;
 	
 private:
+	int m_minNoneZeroY = heightBoard;
 	void swapLines(uint32_t i, uint32_t j);
 	void resetLine(uint32_t numY);
 	bool isCrossedFigureWithBuffer(

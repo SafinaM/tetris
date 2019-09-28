@@ -124,8 +124,8 @@ bool Board::isCrossedFigureWithWalls(
 
 bool Board::allowMove(Direction direction, const Figure &figure) const {
 	const auto& points = figure.points;
-	uint32_t xOffset = figure.getXOffset();
-	uint32_t yOffset = figure.getYOffset();
+	int xOffset = figure.getXOffset();
+	int yOffset = figure.getYOffset();
 	
 	if (direction == Direction::Right) {
 		++xOffset;

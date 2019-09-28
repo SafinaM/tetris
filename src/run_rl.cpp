@@ -17,14 +17,12 @@ int main() {
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
 	owner.reset(new LLFigure);
-	if (owner != nullptr) {
-		bool verifying = owner->verifyDown();
-	}
 	Board& board = Board::instance();
 	points = owner->getPoints();
 	int maxX = 0;
 	int maxY = 0;
 	auto start = std::chrono::system_clock::now();
+	rlutil::saveDefaultColor();
 	rlutil::hidecursor();
 	rlutil::cls();
 	while (true) {
@@ -37,31 +35,36 @@ int main() {
 				case 'w':
 				case rlutil::KEY_UP:
 				case rlutil::KEY_SPACE:
-					points = owner->getPoints();
 					std::cout << "w - rotate" << std::endl;
-					owner->debugPrint();
+//					owner->debugPrint();
 //					if (board.allowRotate(*owner)) {
 						owner->setNextPoints();
-//						points = owner->getPoints();
+						owner->debugPrint();
 //					}
 					break;
 				case 'a':
 				case rlutil::KEY_LEFT:
-					std::cout << "KEY_LEFT" << std::endl;
-					owner->move(Direction::Left);
-					std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
+//					std::cout << "KEY_LEFT" << std::endl;
+//					if (board.allowMove(Direction::Left, *owner)) {
+						owner->move(Direction::Left);
+//						std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
+//					}
 					break;
 				case 'd':
 				case rlutil::KEY_RIGHT:
 					std::cout << "KEY_RIGHT" << std::endl;
-					std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
-					owner->move(Direction::Right);
+//					if (board.allowMove(Direction::Right, *owner)) {
+						owner->move(Direction::Right);
+//						std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
+//					}
 					break;
 				case 's':
 				case rlutil::KEY_DOWN:
 					std::cout << "KEY_DOWN" << std::endl;
-					std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
-					owner->move(Direction::Down);
+					if (board.allowMove(Direction::Down, *owner)) {
+						owner->move(Direction::Down);
+						std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
+					}
 					break;
 				default:
 					break;
@@ -83,7 +86,8 @@ int main() {
 //		std::cout << "loop end" << std::endl;
 //		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
-
+	rlutil::showcursor();
+	
 	return 0;
 }
 
