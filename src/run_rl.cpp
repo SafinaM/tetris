@@ -8,25 +8,31 @@
 #include <Point.h>
 #include <Board.h>
 #include <rlutil.h>
+#include <Painter.h>
 
 int main() {
-	std::cout << Board::widthBoard << " " << Board::heightBoard << std::endl;
-	std::cout << rlutil::trows() << " Rows" << std::endl;
-	std::cout << rlutil::tcols() << " Columns" << std::endl;
+//	std::cout << Board::widthBoard << " " << Board::heightBoard << std::endl;
 	std::unique_ptr<Figure> owner;
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
-	owner.reset(new LLFigure);
 	Board& board = Board::instance();
-	points = owner->getPoints();
-	int maxX = 0;
-	int maxY = 0;
 	auto start = std::chrono::system_clock::now();
 	rlutil::saveDefaultColor();
 	rlutil::hidecursor();
 	rlutil::cls();
+	Painter& painter = Painter::instance();
+	
+	int x = painter.getScreenWidth();
+	int y = painter.getScreenHeight();
+	painter.drawPoint(0, 0, '#', 6, 0);
+	uint32_t originX = (x - Board::widthBoard) / 2;
+	uint32_t originY = 0.1 * y;
+	painter.drawBoard(board, originX,originY);
+	
+	owner.reset(new LLFigure);
+	painter.drawFigure(*owner, originX, originY);
 	while (true) {
-		const Point orig(maxX / 2, 0);
+
 		if(kbhit()) {
 			ch = rlutil::getkey(); // Get character
 			if (ch == 'q')
@@ -35,35 +41,30 @@ int main() {
 				case 'w':
 				case rlutil::KEY_UP:
 				case rlutil::KEY_SPACE:
-					std::cout << "w - rotate" << std::endl;
-//					owner->debugPrint();
-//					if (board.allowRotate(*owner)) {
+					if (board.allowRotate(*owner)) {
+						painter.drawFigure(*owner, originX, originY, false);
 						owner->setNextPoints();
-						owner->debugPrint();
-//					}
+					}
 					break;
 				case 'a':
 				case rlutil::KEY_LEFT:
-//					std::cout << "KEY_LEFT" << std::endl;
-//					if (board.allowMove(Direction::Left, *owner)) {
+					if (board.allowMove(Direction::Left, *owner)) {
+						painter.drawFigure(*owner, originX, originY, false);
 						owner->move(Direction::Left);
-//						std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
-//					}
+					}
 					break;
 				case 'd':
 				case rlutil::KEY_RIGHT:
-					std::cout << "KEY_RIGHT" << std::endl;
-//					if (board.allowMove(Direction::Right, *owner)) {
+					if (board.allowMove(Direction::Right, *owner)) {
+						painter.drawFigure(*owner, originX, originY, false);
 						owner->move(Direction::Right);
-//						std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
-//					}
+					}
 					break;
 				case 's':
 				case rlutil::KEY_DOWN:
-					std::cout << "KEY_DOWN" << std::endl;
 					if (board.allowMove(Direction::Down, *owner)) {
+						painter.drawFigure(*owner, originX, originY, false);
 						owner->move(Direction::Down);
-						std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
 					}
 					break;
 				default:
@@ -73,18 +74,21 @@ int main() {
 		}
 		if (ch == 'q')
 			break;
-		std::cout.flush();
 		auto end = std::chrono::system_clock::now();
 		std::chrono::duration<double> diff = end-start;
 		if (diff.count() > 1.5) {
+			
 			start = std::chrono::system_clock::now();
 			diff.zero();
-			std::cout << "gravity!" << std::endl;
-			owner->move(Direction::Down);
-			std::cout << owner->getXOffset() << " " << owner->getYOffset() << std::endl;
+			if (board.allowMove(Direction::Down, *owner)) {
+				painter.drawFigure(*owner, originX, originY, false);
+				owner->move(Direction::Down);
+			}
 		}
-//		std::cout << "loop end" << std::endl;
+		painter.drawFigure(*owner, originX, originY, false);
+		painter.drawFigure(*owner, originX, originY);
 //		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
 	}
 	rlutil::showcursor();
 	

@@ -11,6 +11,12 @@ struct Board final: Singleton<Board> {
 
 	constexpr static uint32_t widthBoard = 10;
 	constexpr static uint32_t heightBoard = 20;
+	constexpr static uint32_t textColor = 15;
+	constexpr static uint32_t bufferFreeSymbol = '.';
+	constexpr static uint32_t bufferBusySymbol = '#';
+	constexpr static uint32_t figureSymbol = ' ';
+	// yellow
+	constexpr static uint32_t backGroundColor = 6;
 	uint8_t buffer[heightBoard][widthBoard] = {};
 	
 	Board(token) {

@@ -15,6 +15,7 @@ include_directories("${CMAKE_SOURCE_DIR}/../rlutil")
 include_directories(figures)
 include_directories(core)
 include_directories(helpers)
+include_directories(painter)
 add_subdirectory("${CMAKE_SOURCE_DIR}/../rlutil" "${CMAKE_BINARY_DIR}/rlutil")
 
 set(CMAKE_CXX_FLAGS "-lncurses")
