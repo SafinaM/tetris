@@ -27,7 +27,6 @@ void echo() {
 }
 
 int main() {
-//	std::cout << Board::widthBoard << " " << Board::heightBoard << std::endl;
 	std::shared_ptr<Figure> figure;
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
@@ -103,12 +102,12 @@ int main() {
 			if (board.allowMove(Direction::Down, *figure)) {
 				figure->move(Direction::Down);
 			} else {
-					board.addFigureToBuffer(*figure);
+				board.addFigureToBuffer(*figure);
+				painter.drawBoard(board);
+				if (board.verifyLines())
 					painter.drawBoard(board);
-					board.verifyLines();
-					painter.drawBoard(board);
-					figure.reset(new LLFigure);
-					figure->setXY(Board::widthBoard / 2 - 1, 0);
+				figure.reset(new LLFigure);
+				figure->setXY(Board::widthBoard / 2 - 1, 0);
 			}
 		}
 //		painter.drawFigure(*figure, false);

@@ -24,7 +24,7 @@ struct Board final: Singleton<Board> {
 	~Board() {}
 	void addFigureToBuffer(const Figure& figure);
 	void debugPrint() const;
-	void verifyLines();
+	bool verifyLines();
 	// for debug
 	void setLine(uint32_t numY, uint32_t value = 1);
 	void setPoint(uint32_t x, uint32_t y, uint32_t value = 1);

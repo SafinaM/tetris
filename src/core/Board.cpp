@@ -29,7 +29,7 @@ void Board::addFigureToBuffer(const Figure& figure) {
 	}
 }
 
-void Board::verifyLines() {
+bool Board::verifyLines() {
 	bool wasDeleted = false;
 	for (auto i = m_minNoneZeroY; i < heightBoard; ++i) {
 		// erase full line and insert empty line at the begin of vector - not effective way
@@ -47,6 +47,7 @@ void Board::verifyLines() {
 	
 	if (wasDeleted)
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	return wasDeleted;
 }
 
 bool Board::verifyLine(uint32_t numY) {
