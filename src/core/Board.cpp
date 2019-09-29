@@ -30,7 +30,7 @@ void Board::addFigureToBuffer(const Figure& figure) {
 }
 
 bool Board::verifyLines() {
-	bool wasDeleted = false;
+	bool foundAtLeastOneFilledLine = false;
 	for (auto i = m_minNoneZeroY; i < heightBoard; ++i) {
 		// erase full line and insert empty line at the begin of vector - not effective way
 		if (verifyLine(i)) {
@@ -39,15 +39,15 @@ bool Board::verifyLines() {
 			for (auto k = i; k > m_minNoneZeroY; --k) {
 				swapLines(k, k - 1);
 			}
-			wasDeleted = true;
+			foundAtLeastOneFilledLine = true;
 			// line was erased, the with non zero number is decreased
 			++m_minNoneZeroY;
 		}
 	}
 	
-	if (wasDeleted)
+	if (foundAtLeastOneFilledLine)
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	return wasDeleted;
+	return foundAtLeastOneFilledLine;
 }
 
 bool Board::verifyLine(uint32_t numY) {

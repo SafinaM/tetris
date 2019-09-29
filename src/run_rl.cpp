@@ -55,8 +55,6 @@ int main() {
 		if (kbhit()) {
 			painter.drawFigure(*figure, false);
 			ch = rlutil::getkey();
-			if (ch == 'q')
-				break;
 			switch (ch) {
 				case 'w':
 				case rlutil::KEY_UP:

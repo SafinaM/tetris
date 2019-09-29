@@ -5,112 +5,135 @@
 #include <rlutil.h>
 #include <Figure.h>
 #include <LLFigure.h>
+#include <LRFigure.h>
 
 int main() {
 	Board& board = Board::instance();
-	std::unique_ptr<Figure> figure(new LLFigure);
+	std::unique_ptr<Figure> figureLL(new LLFigure);
+	std::unique_ptr<Figure> figureLR(new LRFigure);
 	
-	assert(figure);
-	figure->move(Direction::Down);
-	assert(figure->getYOffset() == 1);
-	figure->move(Direction::Down);
-	assert(figure->getYOffset() == 2);
-	figure->move(Direction::Down);
-	assert(figure->getYOffset() == 3);
+	assert(figureLL);
+	assert(figureLR);
+	figureLL->move(Direction::Down);
+	assert(figureLL->getYOffset() == 1);
+	figureLL->move(Direction::Down);
+	assert(figureLL->getYOffset() == 2);
+	figureLL->move(Direction::Down);
+	assert(figureLL->getYOffset() == 3);
 	
-	board.addFigureToBuffer(*figure);
+	figureLR->move(Direction::Down);
+	assert(figureLR->getYOffset() == 1);
+	figureLR->move(Direction::Down);
+	assert(figureLR->getYOffset() == 2);
+	figureLR->move(Direction::Down);
+	assert(figureLR->getYOffset() == 3);
 	
-	figure->setXY(3, 3);
-	assert(figure->getXOffset() == 3);
-	assert(figure->getYOffset() == 3);
-	board.addFigureToBuffer(*figure);
+	board.addFigureToBuffer(*figureLL);
 	
-	figure->setXY(6, 3);
-	board.addFigureToBuffer(*figure);
-	figure->setNextPoints();
+	figureLL->setXY(3, 3);
+	assert(figureLL->getXOffset() == 3);
+	assert(figureLL->getYOffset() == 3);
+	board.addFigureToBuffer(*figureLL);
 	
-	figure->setXY(8, 2);
-	board.addFigureToBuffer(*figure);
-	figure->setNextPoints();
+	figureLL->setXY(6, 3);
+	board.addFigureToBuffer(*figureLL);
+	figureLL->setNextPoints();
+	
+	figureLL->setXY(8, 2);
+	board.addFigureToBuffer(*figureLL);
+	figureLL->setNextPoints();
 	board.setLine(5);
 	assert(board.verifyLine(5));
 	board.setLine(6);
-	board.debugPrint();
 	
 	assert(!board.verifyLine(7));
-	
-	board.verifyLines();
+	assert(board.verifyLines());
 	// after checking we do not have filled lines
 	for (auto i = 0; i < Board::heightBoard; ++i) {
 		assert(!board.verifyLine(i));
 	}
 	std::cout << std::endl;
-	figure->setNextPoints();
-	figure->setXY(-1, 1);
-	assert(board.allowMove(Direction::Right, *figure) == true);
-	assert(board.allowMove(Direction::Left, *figure) == false);
-	assert(board.allowMove(Direction::Down, *figure) == true);
+	figureLL->setNextPoints();
+	figureLL->setXY(-1, 1);
+	assert(board.allowMove(Direction::Right, *figureLL) == true);
+	assert(board.allowMove(Direction::Left, *figureLL) == false);
+	assert(board.allowMove(Direction::Down, *figureLL) == true);
 	
-	figure->setXY(0, 1);
-	assert(board.allowRotate(*figure) == true);
+	figureLL->setXY(0, 1);
+	assert(board.allowRotate(*figureLL) == true);
 	
-	figure->setXY(7, 1);
+	figureLL->setXY(7, 1);
 	
-	assert(board.allowMove(Direction::Right, *figure) == false);
-	assert(board.allowMove(Direction::Left, *figure) == true);
-	assert(board.allowMove(Direction::Down, *figure) == true);
-	assert(board.allowRotate(*figure) == true);
+	assert(board.allowMove(Direction::Right, *figureLL) == false);
+	assert(board.allowMove(Direction::Left, *figureLL) == true);
+	assert(board.allowMove(Direction::Down, *figureLL) == true);
+	assert(board.allowRotate(*figureLL) == true);
 	
-	figure->setXY(7, 2);
+	figureLL->setXY(7, 2);
 
-	assert(board.allowMove(Direction::Right, *figure) == false);
-	assert(board.allowMove(Direction::Left, *figure) == true);
-	assert(board.allowMove(Direction::Down, *figure) == false);
-	assert(board.allowRotate(*figure) == true);
+	assert(board.allowMove(Direction::Right, *figureLL) == false);
+	assert(board.allowMove(Direction::Left, *figureLL) == true);
+	assert(board.allowMove(Direction::Down, *figureLL) == false);
+	assert(board.allowRotate(*figureLL) == true);
 	
-	figure->setNextPoints();
-	figure->setXY(8, 2);
+	figureLL->setNextPoints();
+	figureLL->setXY(8, 2);
 	
-	figure->setNextPoints();
-	assert(board.allowRotate(*figure) == false);
+	figureLL->setNextPoints();
+	assert(board.allowRotate(*figureLL) == false);
 	
-	figure->setXY(0, 2);
-	assert(board.allowRotate(*figure) == true);
-	figure->setNextPoints();
-	figure->setNextPoints();
-	figure->setXY(-1, 2);
-	assert(board.allowRotate(*figure) == false);
+	figureLL->setXY(0, 2);
+	assert(board.allowRotate(*figureLL) == true);
+	figureLL->setNextPoints();
+	figureLL->setNextPoints();
+	figureLL->setXY(-1, 2);
+	assert(board.allowRotate(*figureLL) == false);
 	
-	figure->setXY(-1, 4);
-	assert(board.allowMove(Direction::Right, *figure) == false);
-	assert(board.allowMove(Direction::Left, *figure) == false);
-	assert(board.allowMove(Direction::Down, *figure) == true);
-	assert(board.allowRotate(*figure) == false);
+	figureLL->setXY(-1, 4);
+	assert(board.allowMove(Direction::Right, *figureLL) == false);
+	assert(board.allowMove(Direction::Left, *figureLL) == false);
+	assert(board.allowMove(Direction::Down, *figureLL) == true);
+	assert(board.allowRotate(*figureLL) == false);
 	
-	figure->setXY(2, 4);
-	assert(board.allowMove(Direction::Right, *figure) == false);
-	assert(board.allowMove(Direction::Left, *figure) == false);
-	assert(board.allowMove(Direction::Down, *figure) == true);
-	assert(board.allowRotate(*figure) == true);
+	figureLL->setXY(2, 4);
+	assert(board.allowMove(Direction::Right, *figureLL) == false);
+	assert(board.allowMove(Direction::Left, *figureLL) == false);
+	assert(board.allowMove(Direction::Down, *figureLL) == true);
+	assert(board.allowRotate(*figureLL) == true);
 	
-	figure->setXY(2, 5);
-	assert(board.allowMove(Direction::Right, *figure) == true);
-	assert(board.allowMove(Direction::Left, *figure) == false);
-	assert(board.allowMove(Direction::Down, *figure) == true);
-	assert(board.allowRotate(*figure) == false);
+	figureLL->setXY(2, 5);
+	assert(board.allowMove(Direction::Right, *figureLL) == true);
+	assert(board.allowMove(Direction::Left, *figureLL) == false);
+	assert(board.allowMove(Direction::Down, *figureLL) == true);
+	assert(board.allowRotate(*figureLL) == false);
 	
-	figure->setXY(2, 17);
-	assert(board.allowMove(Direction::Right, *figure) == true);
-	assert(board.allowMove(Direction::Left, *figure) == true);
-	assert(board.allowMove(Direction::Down, *figure) == false);
-	assert(board.allowRotate(*figure) == true);
+	figureLL->setXY(2, 17);
+	assert(board.allowMove(Direction::Right, *figureLL) == true);
+	assert(board.allowMove(Direction::Left, *figureLL) == true);
+	assert(board.allowMove(Direction::Down, *figureLL) == false);
+	assert(board.allowRotate(*figureLL) == true);
 	
-	figure->setNextPoints();
-	figure->setXY(0, 18);
-	assert(board.allowMove(Direction::Right, *figure) == true);
-	assert(board.allowMove(Direction::Left, *figure) == false);
-	assert(board.allowMove(Direction::Down, *figure) == false);
-	assert(board.allowRotate(*figure) == false);
-	board.addFigureToBuffer(*figure);
+	figureLL->setNextPoints();
+	figureLL->setXY(0, 18);
+	assert(board.allowMove(Direction::Right, *figureLL) == true);
+	assert(board.allowMove(Direction::Left, *figureLL) == false);
+	assert(board.allowMove(Direction::Down, *figureLL) == false);
+	assert(board.allowRotate(*figureLL) == false);
+	board.addFigureToBuffer(*figureLL);
+	board.debugPrint();
+	
+	std::cout << "\nLRFigureTest\n"<< std::endl;
+	
+	figureLR->setXY(0, 0);
+	board.addFigureToBuffer(*figureLR);
+	figureLR->setNextPoints();
+	figureLR->setXY(-1, 5);
+	board.addFigureToBuffer(*figureLR);
+	figureLR->setNextPoints();
+	figureLR->setXY(7, 0);
+	board.addFigureToBuffer(*figureLR);
+	figureLR->setNextPoints();
+	figureLR->setXY(3, 14);
+	board.addFigureToBuffer(*figureLR);
 	board.debugPrint();
 }
