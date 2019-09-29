@@ -88,9 +88,38 @@ void Painter::paintOver() const {
 	InsidePainter::paintOver();
 }
 
+void Painter::hideCursor() const {
+	InsidePainter::hideCursor();
+}
+
+void Painter::showCursor() const {
+	InsidePainter::showCursor();
+}
+
 void InsidePainter::setScreenSize() {
-	screenWidth = rlutil::tcols();
-	screenHeight = rlutil::trows();
+	if (screenWidth != rlutil::tcols() || screenHeight != rlutil::trows()) {
+		screenWidth = rlutil::tcols();
+		screenHeight = rlutil::trows();
+		screenSizeChanged = true;
+	}
+}
+void InsidePainter::setFlagScreenSizeChangedInFalse() {
+	screenSizeChanged = false;
+}
+
+bool Painter::isScreenSizeChanged() {
+	return screenSizeChanged;
+}
+
+void Painter::setFlagScreenSizeChangedInFalse() {
+	InsidePainter::setFlagScreenSizeChangedInFalse();
+}
+
+void InsidePainter::hideCursor() const {
+	rlutil::hidecursor();
+}
+void InsidePainter::showCursor() const {
+	rlutil::showcursor();
 }
 
 void Painter::setScreenSize() {
