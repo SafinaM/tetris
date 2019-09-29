@@ -47,7 +47,6 @@ int main() {
 		painter.setScreenSize();
 		if (painter.isScreenSizeChanged()) {
 			painter.clearScreen();
-			painter.setFlagScreenSizeChangedInFalse();
 			x = painter.getScreenWidth();
 			y = painter.getScreenHeight();
 			painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);

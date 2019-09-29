@@ -13,7 +13,6 @@ protected:
 	void hideCursor() const;
 	void showCursor() const;
 	bool screenSizeChanged = false;
-	void setFlagScreenSizeChangedInFalse();
 };
 
 struct Painter: protected InsidePainter, Singleton<Painter> {
@@ -29,8 +28,6 @@ struct Painter: protected InsidePainter, Singleton<Painter> {
 	void paintOver() const;
 	void setScreenSize();
 	bool isScreenSizeChanged();
-	void setFlagScreenSizeChangedInFalse();
-	
 	void setXY(uint32_t x, uint32_t y);
 	uint32_t getScreenWidth();
 	uint32_t getScreenHeight();

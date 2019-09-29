@@ -100,19 +100,14 @@ void InsidePainter::setScreenSize() {
 	if (screenWidth != rlutil::tcols() || screenHeight != rlutil::trows()) {
 		screenWidth = rlutil::tcols();
 		screenHeight = rlutil::trows();
+		std::cout << "WAS CHANGED" << std::endl;
 		screenSizeChanged = true;
-	}
-}
-void InsidePainter::setFlagScreenSizeChangedInFalse() {
-	screenSizeChanged = false;
+	} else
+		screenSizeChanged = false;
 }
 
 bool Painter::isScreenSizeChanged() {
 	return screenSizeChanged;
-}
-
-void Painter::setFlagScreenSizeChangedInFalse() {
-	InsidePainter::setFlagScreenSizeChangedInFalse();
 }
 
 void InsidePainter::hideCursor() const {
