@@ -5,6 +5,7 @@
 #include <LLFigure.h>
 #include <LRFigure.h>
 #include <IFigure.h>
+#include <TFigure.h>
 #include <Point.h>
 #include <Board.h>
 #include <rlutil.h>
