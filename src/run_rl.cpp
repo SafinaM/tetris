@@ -40,7 +40,7 @@ int main() {
 	int y = painter.getScreenHeight();
 	painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);
 	painter.drawBoard(board);
-	figure.reset(new LLFigure);
+	figure.reset(new IFigure);
 	figure->setXY(Board::widthBoard / 2 - 1, 0);
 	noecho();
 	while (true) {
@@ -103,7 +103,7 @@ int main() {
 				painter.drawBoard(board);
 				if (board.verifyLines())
 					painter.drawBoard(board);
-				figure.reset(new LLFigure);
+				figure.reset(new IFigure);
 				figure->setXY(Board::widthBoard / 2 - 1, 0);
 			}
 		}

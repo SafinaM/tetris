@@ -1,8 +1,8 @@
 #pragma once
 #include "Figure.h"
+#include "enums.h"
 #include <vector>
 #include <cstdint>
-#include "enums.h"
 
 struct LLFigure : Figure {
 	LLFigure();
