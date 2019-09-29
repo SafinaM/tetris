@@ -3,6 +3,7 @@
 #include "assert.h"
 
 void Board::debugPrint() const {
+	std::cout.clear();
 	for (uint8_t i = 0; i < heightBoard; ++i) {
 		for (uint8_t j = 0; j < widthBoard; ++j) {
 			std::cout << +buffer[i][j];
