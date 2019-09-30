@@ -6,6 +6,8 @@
 #include <LRFigure.h>
 #include <IFigure.h>
 #include <TFigure.h>
+#include <SFigure.h>
+#include <ZFigure.h>
 #include <Point.h>
 #include <Board.h>
 #include <rlutil.h>
@@ -41,7 +43,7 @@ int main() {
 	int y = painter.getScreenHeight();
 	painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);
 	painter.drawBoard(board);
-	figure.reset(new IFigure);
+	figure.reset(new SFigure);
 	figure->setXY(Board::widthBoard / 2 - 1, 0);
 	noecho();
 	while (true) {
@@ -104,7 +106,7 @@ int main() {
 				painter.drawBoard(board);
 				if (board.verifyLines())
 					painter.drawBoard(board);
-				figure.reset(new IFigure);
+				figure.reset(new SFigure);
 				figure->setXY(Board::widthBoard / 2 - 1, 0);
 			}
 		}
