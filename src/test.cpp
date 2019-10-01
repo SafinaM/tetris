@@ -6,12 +6,30 @@
 #include <Figure.h>
 #include <LLFigure.h>
 #include <LRFigure.h>
+#include <random>
+#include <unordered_map>
 
 int main() {
+	std::default_random_engine generator;
+	uint32_t upLimit = 6;
+	std::uniform_int_distribution<int> distribution(0, upLimit);
+	std::unordered_map<int, int> map;
+	const uint32_t numberOfTicks = 5000;
+	int ticks = numberOfTicks;
+	while (ticks > 0){
+		int number = distribution(generator);
+		++map[number];
+		--ticks;
+	}
+	// generating figures checking
+	for (const auto &it: map) {
+		std::cout << it.first << " was generated " << it.second << " times" << std::endl;
+		assert(it.second / (numberOfTicks / upLimit) < 0.1);
+	}
+	
 	Board& board = Board::instance();
 	std::unique_ptr<Figure> figureLL(new LLFigure);
 	std::unique_ptr<Figure> figureLR(new LRFigure);
-	
 	assert(figureLL);
 	assert(figureLR);
 	figureLL->move(Direction::Down);

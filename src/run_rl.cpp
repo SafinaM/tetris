@@ -1,6 +1,9 @@
 #include <memory>
 #include <thread>
 #include <iostream>
+#include <random>
+#include <cassert>
+
 #include <Figure.h>
 #include <LLFigure.h>
 #include <LRFigure.h>
@@ -8,6 +11,7 @@
 #include <TFigure.h>
 #include <SFigure.h>
 #include <ZFigure.h>
+#include <SQFigure.h>
 #include <Point.h>
 #include <Board.h>
 #include <rlutil.h>
@@ -30,12 +34,15 @@ void echo() {
 }
 
 int main() {
+	
+	std::default_random_engine generator;
+	std::uniform_int_distribution<int> distribution(0, 6);
+	
 	std::shared_ptr<Figure> figure;
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
 	Board& board = Board::instance();
 	auto start = std::chrono::system_clock::now();
-//	rlutil::saveDefaultColor();
 	Painter& painter = Painter::instance();
 	painter.hideCursor();
 	painter.clearScreen();
@@ -43,77 +50,105 @@ int main() {
 	int y = painter.getScreenHeight();
 	painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);
 	painter.drawBoard(board);
-	figure.reset(new SFigure);
-	figure->setXY(Board::widthBoard / 2 - 1, 0);
-	noecho();
-	while (true) {
-		painter.setScreenSize();
-		if (painter.isScreenSizeChanged()) {
-			painter.clearScreen();
-			x = painter.getScreenWidth();
-			y = painter.getScreenHeight();
-			painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);
-			painter.drawBoard(board);
-		}
-		if (kbhit()) {
-			painter.drawFigure(*figure, false);
-			ch = rlutil::getkey();
-			switch (ch) {
-				case 'w':
-				case rlutil::KEY_UP:
-				case rlutil::KEY_SPACE:
-					if (board.allowRotate(*figure)) {
-						figure->setNextPoints();
-					}
-					break;
-				case 'a':
-				case rlutil::KEY_LEFT:
-					if (board.allowMove(Direction::Left, *figure)) {
-						figure->move(Direction::Left);
-					}
-					break;
-				case 'd':
-				case rlutil::KEY_RIGHT:
-					if (board.allowMove(Direction::Right, *figure)) {
-						figure->move(Direction::Right);
-					}
-					break;
-				case 's':
-				case rlutil::KEY_DOWN:
-					if (board.allowMove(Direction::Down, *figure)) {
-						figure->move(Direction::Down);
-					}
-					break;
-				default:
-					break;
-			}
-		}
-
+	
+	while(true) {
 		if (ch == 'q')
 			break;
-		
-
-		auto end = std::chrono::system_clock::now();
-		std::chrono::duration<double> diff = end-start;
-		if (diff.count() > 1.5) {
-			painter.drawFigure(*figure, false);
-			start = std::chrono::system_clock::now();
-			diff.zero();
-			if (board.allowMove(Direction::Down, *figure)) {
-				figure->move(Direction::Down);
-			} else {
-				board.addFigureToBuffer(*figure);
-				painter.drawBoard(board);
-				if (board.verifyLines())
-					painter.drawBoard(board);
+		int number = distribution(generator);
+		switch(number) {
+			case 0:
+				figure.reset(new IFigure);
+				break;
+			case 1:
+				figure.reset(new LLFigure);
+				break;
+			case 2:
+				figure.reset(new LRFigure);
+				break;
+			case 3:
 				figure.reset(new SFigure);
-				figure->setXY(Board::widthBoard / 2 - 1, 0);
-			}
+				break;
+			case 4:
+				figure.reset(new ZFigure);
+				break;
+			case 5:
+				figure.reset(new TFigure);
+				break;
+			case 6:
+				figure.reset(new SQFigure);
+				break;
+			default:
+				assert(false);
+				break;
 		}
-//		painter.drawFigure(*figure, false);
-		painter.drawFigure(*figure);
-//		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	}
+		figure->setXY(Board::widthBoard / 2 - 1, 0);
+		noecho();
+		while (true) {
+			painter.setScreenSize();
+			if (painter.isScreenSizeChanged()) {
+				painter.clearScreen();
+				x = painter.getScreenWidth();
+				y = painter.getScreenHeight();
+				painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);
+				painter.drawBoard(board);
+			}
+			if (kbhit()) {
+				painter.drawFigure(*figure, false);
+				ch = rlutil::getkey();
+				switch (ch) {
+					case 'w':
+					case rlutil::KEY_UP:
+					case rlutil::KEY_SPACE:
+						if (board.allowRotate(*figure)) {
+							figure->setNextPoints();
+						}
+						break;
+					case 'a':
+					case rlutil::KEY_LEFT:
+						if (board.allowMove(Direction::Left, *figure)) {
+							figure->move(Direction::Left);
+						}
+						break;
+					case 'd':
+					case rlutil::KEY_RIGHT:
+						if (board.allowMove(Direction::Right, *figure)) {
+							figure->move(Direction::Right);
+						}
+						break;
+					case 's':
+					case rlutil::KEY_DOWN:
+						if (board.allowMove(Direction::Down, *figure)) {
+							figure->move(Direction::Down);
+						}
+						break;
+					default:
+						break;
+				}
+			}
+			
+			if (ch == 'q')
+				break;
+			
+			
+			auto end = std::chrono::system_clock::now();
+			std::chrono::duration<double> diff = end-start;
+			if (diff.count() > 1.5) {
+				painter.drawFigure(*figure, false);
+				start = std::chrono::system_clock::now();
+				diff.zero();
+				if (board.allowMove(Direction::Down, *figure)) {
+					figure->move(Direction::Down);
+				} else {
+					board.addFigureToBuffer(*figure);
+					painter.drawBoard(board);
+					if (board.verifyLines())
+						painter.drawBoard(board);
+					break;
+				}
+			}
+			painter.drawFigure(*figure);
+		} // one figure movement
+	}     // main cycle
 	
 	painter.showCursor();
 	painter.clearScreen();
