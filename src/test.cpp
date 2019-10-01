@@ -10,7 +10,7 @@
 #include <unordered_map>
 
 int main() {
-	std::default_random_engine generator;
+	std::random_device generator;
 	uint32_t upLimit = 6;
 	std::uniform_int_distribution<int> distribution(0, upLimit);
 	std::unordered_map<int, int> map;

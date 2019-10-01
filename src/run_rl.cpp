@@ -35,7 +35,7 @@ void echo() {
 
 int main() {
 	
-	std::default_random_engine generator;
+	std::random_device rd;
 	std::uniform_int_distribution<int> distribution(0, 6);
 	
 	std::shared_ptr<Figure> figure;
@@ -54,7 +54,7 @@ int main() {
 	while(true) {
 		if (ch == 'q')
 			break;
-		int number = distribution(generator);
+		int number = distribution(rd);
 		switch(number) {
 			case 0:
 				figure.reset(new IFigure);
@@ -78,6 +78,7 @@ int main() {
 				figure.reset(new SQFigure);
 				break;
 			default:
+				std::cerr << "Unsupported type of figure" << std::endl;
 				assert(false);
 				break;
 		}
@@ -132,7 +133,7 @@ int main() {
 			
 			auto end = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = end-start;
-			if (diff.count() > 1.5) {
+			if (diff.count() > 1.2) {
 				painter.drawFigure(*figure, false);
 				start = std::chrono::system_clock::now();
 				diff.zero();
