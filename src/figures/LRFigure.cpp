@@ -53,7 +53,3 @@ Orientation LRFigure::getNextOrientationType() const noexcept{
 		}
 	}
 }
-
-LRFigure::~LRFigure() {
-//	std::cout << "Desctructor of LRFigure" << std::endl;
-}

@@ -53,7 +53,3 @@ Orientation TFigure::getNextOrientationType() const noexcept {
 		}
 	}
 }
-
-TFigure::~TFigure() {
-//	std::cout << "Desctructor of LLFigure" << std::endl;
-}

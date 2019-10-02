@@ -8,7 +8,7 @@ struct SQFigure : Figure {
 	SQFigure();
 	void setNextPoints();
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const;
-	~SQFigure();
+	~SQFigure() = default;
 
 protected:
 	Orientation getNextOrientationType() const noexcept;

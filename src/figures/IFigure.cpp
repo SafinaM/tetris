@@ -42,7 +42,3 @@ Orientation IFigure::getNextOrientationType() const noexcept {
 		}
 	}
 }
-
-IFigure::~IFigure() {
-//	std::cout << "Desctructor of IFigure" << std::endl;
-}

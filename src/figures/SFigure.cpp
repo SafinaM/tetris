@@ -36,7 +36,3 @@ Orientation SFigure::getNextOrientationType() const noexcept{
 		}
 	}
 }
-
-SFigure::~SFigure() {
-//	std::cout << "Desctructor of LLFigure" << std::endl;
-}

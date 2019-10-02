@@ -8,7 +8,7 @@ struct IFigure : Figure {
 	IFigure();
 	void setNextPoints();
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const;
-	~IFigure();
+	~IFigure() = default;
 
 protected:
 	Orientation getNextOrientationType() const noexcept;

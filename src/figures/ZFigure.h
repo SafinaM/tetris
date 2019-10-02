@@ -8,7 +8,7 @@ struct ZFigure : Figure {
 	ZFigure();
 	void setNextPoints();
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const;
-	~ZFigure();
+	~ZFigure() = default;
 
 protected:
 	Orientation getNextOrientationType() const noexcept;

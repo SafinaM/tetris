@@ -37,7 +37,3 @@ Orientation ZFigure::getNextOrientationType() const noexcept{
 		}
 	}
 }
-
-ZFigure::~ZFigure() {
-//	std::cout << "Desctructor of LLFigure" << std::endl;
-}

@@ -8,7 +8,7 @@ struct TFigure : Figure {
 	TFigure();
 	void setNextPoints();
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const;
-	~TFigure();
+	~TFigure() = default;
 
 protected:
 	Orientation getNextOrientationType() const noexcept;

@@ -20,7 +20,3 @@ std::vector<std::vector<uint8_t>> SQFigure::getPoints(Orientation orientation) c
 Orientation SQFigure::getNextOrientationType() const noexcept{
 	return Orientation:: First_0;
 }
-
-SQFigure::~SQFigure() {
-//	std::cout << "Desctructor of LLFigure" << std::endl;
-}

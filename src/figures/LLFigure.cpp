@@ -53,7 +53,3 @@ Orientation LLFigure::getNextOrientationType() const noexcept{
 		}
 	}
 }
-
-LLFigure::~LLFigure() {
-//	std::cout << "Desctructor of LLFigure" << std::endl;
-}
