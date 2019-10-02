@@ -25,6 +25,7 @@ struct Painter: protected InsidePainter, Singleton<Painter> {
 	void hideCursor() const;
 	void showCursor() const;
 	void setScreenSize();
+	void printColoredText(const std::string &text, uint32_t x, uint32_t y, uint32_t color, uint32_t textColor);
 	bool isScreenSizeChanged();
 	void setXY(uint32_t x, uint32_t y);
 	uint32_t getScreenWidth();

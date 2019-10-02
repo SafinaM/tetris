@@ -131,7 +131,6 @@ int main() {
 			if (ch == 'q')
 				break;
 			
-			
 			auto end = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = end-start;
 			if (diff.count() > currentTimePeriod) {
@@ -142,11 +141,13 @@ int main() {
 					figure->move(Direction::Down);
 				} else {
 					if (figure->getYOffset() <= 0) {
-						std::cout << "Game over!!!" << std::endl;
+						painter.clearScreen();
+						painter.printColoredText("  GAME OVER!!!  ", x / 2 - 16 / 2, y / 2, 6, 12);
 						board.clear();
+						std::this_thread::sleep_for(std::chrono::milliseconds(4000));
+						painter.clearScreen();
 						currentTimePeriod = originTimePeriod;
 						painter.drawBoard(board);
-						std::this_thread::sleep_for(std::chrono::milliseconds(400));
 						break;
 					}
 					board.addFigureToBuffer(*figure);

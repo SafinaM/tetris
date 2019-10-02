@@ -53,6 +53,13 @@ void Painter::drawBoard(const Board &board) const {
 	}
 }
 
+void
+Painter::printColoredText(const std::string &text, uint32_t x, uint32_t y, uint32_t color, uint32_t textColor) {
+		for (auto i = 0; i < text.size(); ++i) {
+			InsidePainter::drawPoint(x + i, y, text[i], color, textColor);
+		}
+}
+
 void InsidePainter::drawPoint(uint32_t x, uint32_t y, char ch, uint32_t color, uint32_t textColor) const {
 	rlutil::locate(x, y);
 	rlutil::setColor(textColor);
