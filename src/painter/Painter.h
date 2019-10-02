@@ -8,7 +8,6 @@ struct InsidePainter {
 protected:
 	void drawPoint(uint32_t x, uint32_t y, char ch, uint32_t color, uint32_t textColor = 0) const;
 	void clearScreen() const;
-	void paintOver() const;
 	void setScreenSize();
 	void hideCursor() const;
 	void showCursor() const;
@@ -25,7 +24,6 @@ struct Painter: protected InsidePainter, Singleton<Painter> {
 	void clearScreen() const;
 	void hideCursor() const;
 	void showCursor() const;
-	void paintOver() const;
 	void setScreenSize();
 	bool isScreenSizeChanged();
 	void setXY(uint32_t x, uint32_t y);

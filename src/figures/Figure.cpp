@@ -47,11 +47,6 @@ uint32_t Figure::getColor() const noexcept {
 	return m_Color;
 }
 
-void Figure::resetOffset() noexcept {
-	m_offsetX = 0;
-	m_offsetY = 0;
-}
-
 void Figure::debugPrint() noexcept {
 	assert(!points.empty());
 	for (int i = 0; i < points.size(); ++i) {

@@ -5,7 +5,6 @@
 void Painter::drawFigure(const Figure& figure, bool draw) const {
 	const auto& points = figure.getPoints();
 	assert(!points.empty());
-//	clearScreen();
 	const int xOffset = figure.getXOffset();
 	const int yOffset = figure.getYOffset();
 	uint32_t color = 0;
@@ -66,26 +65,12 @@ void InsidePainter::clearScreen() const {
 	rlutil::cls();
 }
 
-void InsidePainter::paintOver() const {
-	const auto width = rlutil::tcols();
-	const auto height = rlutil::trows();
-	for (auto i = 0; i < height; ++i) {
-		for (auto j = 0; j < width; ++j) {
-			drawPoint(j, i, ' ', 0, 0);
-		}
-	}
-}
-
 void Painter::drawPoint(uint32_t x, uint32_t y, char ch, uint32_t color, uint32_t textColor) const {
 	InsidePainter::drawPoint(x, y, ch, color, textColor);
 }
 
 void Painter::clearScreen() const {
 	InsidePainter::clearScreen();
-}
-
-void Painter::paintOver() const {
-	InsidePainter::paintOver();
 }
 
 void Painter::hideCursor() const {
@@ -100,7 +85,6 @@ void InsidePainter::setScreenSize() {
 	if (screenWidth != rlutil::tcols() || screenHeight != rlutil::trows()) {
 		screenWidth = rlutil::tcols();
 		screenHeight = rlutil::trows();
-		std::cout << "WAS CHANGED" << std::endl;
 		screenSizeChanged = true;
 	} else
 		screenSizeChanged = false;

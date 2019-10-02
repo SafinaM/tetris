@@ -3,7 +3,6 @@
 #include "assert.h"
 
 void Board::debugPrint() const {
-	std::cout.clear();
 	for (uint8_t i = 0; i < heightBoard; ++i) {
 		for (uint8_t j = 0; j < widthBoard; ++j) {
 			std::cout << +buffer[i][j];
@@ -141,4 +140,13 @@ bool Board::allowMove(Direction direction, const Figure &figure) const {
 	return
 		isCrossedFigureWithBuffer(points, xOffset, yOffset) &&
 		isCrossedFigureWithWalls(points, xOffset, yOffset);
+}
+
+void Board::clear() {
+	for (uint8_t i = 0; i < heightBoard; ++i) {
+		for (uint8_t j = 0; j < widthBoard; ++j) {
+			buffer[i][j] = 0;
+		}
+		std::cout << std::endl;
+	}
 }

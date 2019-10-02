@@ -34,6 +34,8 @@ struct Board final: Singleton<Board> {
 	bool allowMove(Direction direction, const Figure &figure) const;
 	bool allowRotate(const Figure &figure) const;
 	
+	void clear();
+	
 private:
 	int m_minNoneZeroY = heightBoard;
 	void swapLines(uint32_t i, uint32_t j);

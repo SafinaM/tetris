@@ -17,7 +17,6 @@ struct Figure {
 	void setXY(int x, int y) noexcept;
 	int getXOffset() const noexcept;
 	int getYOffset() const noexcept;
-	void resetOffset() noexcept;
 	void debugPrint() noexcept;
 	uint32_t getColor() const noexcept;
 	

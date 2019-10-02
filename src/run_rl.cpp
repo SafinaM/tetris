@@ -38,7 +38,7 @@ int main() {
 	std::random_device rd;
 	std::uniform_int_distribution<int> distribution(0, 6);
 	
-	std::shared_ptr<Figure> figure;
+	std::unique_ptr<Figure> figure;
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
 	Board& board = Board::instance();
@@ -50,7 +50,8 @@ int main() {
 	int y = painter.getScreenHeight();
 	painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);
 	painter.drawBoard(board);
-	
+	const double originTimePeriod = 1.2;
+	double currentTimePeriod = originTimePeriod;
 	while(true) {
 		if (ch == 'q')
 			break;
@@ -133,13 +134,21 @@ int main() {
 			
 			auto end = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = end-start;
-			if (diff.count() > 1.2) {
+			if (diff.count() > currentTimePeriod) {
 				painter.drawFigure(*figure, false);
 				start = std::chrono::system_clock::now();
 				diff.zero();
 				if (board.allowMove(Direction::Down, *figure)) {
 					figure->move(Direction::Down);
 				} else {
+					if (figure->getYOffset() <= 0) {
+						std::cout << "Game over!!!" << std::endl;
+						board.clear();
+						currentTimePeriod = originTimePeriod;
+						painter.drawBoard(board);
+						std::this_thread::sleep_for(std::chrono::milliseconds(400));
+						break;
+					}
 					board.addFigureToBuffer(*figure);
 					painter.drawBoard(board);
 					if (board.verifyLines())
