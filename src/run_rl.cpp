@@ -142,9 +142,12 @@ int main() {
 				} else {
 					if (figure->getYOffset() <= 0) {
 						painter.clearScreen();
-						painter.printColoredText("  GAME OVER!!!  ", x / 2 - 16 / 2, y / 2, 6, 12);
+						const std::string gameOverStr = " GAME OVER!!! press Q - to quite, any other key - to repeat! ";
+						painter.printColoredText(gameOverStr, x / 2 - gameOverStr.size() / 2, y / 2, 6, 12);
+						ch = getchar();
+						if (ch == 'q')
+							break;
 						board.clear();
-						std::this_thread::sleep_for(std::chrono::milliseconds(4000));
 						painter.clearScreen();
 						currentTimePeriod = originTimePeriod;
 						painter.drawBoard(board);
