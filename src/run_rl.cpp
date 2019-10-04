@@ -33,11 +33,56 @@ void echo() {
 	tcsetattr(STDIN_FILENO, TCSANOW, &dt);
 }
 
+static std::vector<uint32_t> generateSequence(uint32_t numberOfFigures) {
+	std::random_device rd;
+	std::vector<uint32_t> res;
+	res.reserve(numberOfFigures);
+	while (numberOfFigures > 0) {
+		std::uniform_int_distribution<int> distribution(0, 6);
+		uint32_t n = distribution(rd);
+		res.emplace_back(std::move(n));
+		--numberOfFigures;
+	}
+
+	return res;
+}
+
+void generateFigure(std::unique_ptr<Figure>& figure, uint32_t number) {
+
+	switch(number) {
+		case 0:
+			figure.reset(new IFigure);
+			break;
+		case 1:
+			figure.reset(new LLFigure);
+			break;
+		case 2:
+			figure.reset(new LRFigure);
+			break;
+		case 3:
+			figure.reset(new SFigure);
+			break;
+		case 4:
+			figure.reset(new ZFigure);
+			break;
+		case 5:
+			figure.reset(new TFigure);
+			break;
+		case 6:
+			figure.reset(new SQFigure);
+			break;
+		default:
+			std::cerr << "Unsupported type of figure" << std::endl;
+			assert(false);
+			break;
+	}
+}
+
 int main() {
 	
-	std::random_device rd;
-	std::uniform_int_distribution<int> distribution(0, 6);
 	
+	auto tmp = ZFigure();
+	std::unique_ptr<Figure> prevFigure;
 	std::unique_ptr<Figure> figure;
 	int ch;
 	std::vector<std::vector<uint8_t>> points;
@@ -46,43 +91,24 @@ int main() {
 	Painter& painter = Painter::instance();
 	painter.hideCursor();
 	painter.clearScreen();
+	const std::string gameOverStr = " GAME OVER!!! press Q - to quite, any other key - to repeat! ";
+	
 	int x = painter.getScreenWidth();
 	int y = painter.getScreenHeight();
 	painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);
 	painter.drawBoard(board);
 	const double originTimePeriod = 1.2;
 	double currentTimePeriod = originTimePeriod;
+	auto sequence = generateSequence(7);
+	
 	while(true) {
 		if (ch == 'q')
 			break;
-		int number = distribution(rd);
-		switch(number) {
-			case 0:
-				figure.reset(new IFigure);
-				break;
-			case 1:
-				figure.reset(new LLFigure);
-				break;
-			case 2:
-				figure.reset(new LRFigure);
-				break;
-			case 3:
-				figure.reset(new SFigure);
-				break;
-			case 4:
-				figure.reset(new ZFigure);
-				break;
-			case 5:
-				figure.reset(new TFigure);
-				break;
-			case 6:
-				figure.reset(new SQFigure);
-				break;
-			default:
-				std::cerr << "Unsupported type of figure" << std::endl;
-				assert(false);
-				break;
-		}
+		generateFigure(figure, *std::prev(sequence.end()));
+		if (sequence.size() > 0)
+			sequence.pop_back();
+		else
+			sequence = generateSequence(7);
 		figure->setXY(Board::widthBoard / 2 - 1, 0);
 		noecho();
 		while (true) {
@@ -95,6 +121,7 @@ int main() {
 				painter.drawBoard(board);
 			}
 			if (kbhit()) {
+				// erase prev figure!!!
 				painter.drawFigure(*figure, false);
 				ch = rlutil::getkey();
 				switch (ch) {
@@ -142,7 +169,6 @@ int main() {
 				} else {
 					if (figure->getYOffset() <= 0) {
 						painter.clearScreen();
-						const std::string gameOverStr = " GAME OVER!!! press Q - to quite, any other key - to repeat! ";
 						painter.printColoredText(gameOverStr, x / 2 - gameOverStr.size() / 2, y / 2, 6, 12);
 						ch = getchar();
 						if (ch == 'q')
