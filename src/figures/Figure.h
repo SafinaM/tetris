@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <memory>
 #include "enums.h"
 
 struct Figure {
@@ -19,9 +20,7 @@ struct Figure {
 	int getYOffset() const noexcept;
 	void debugPrint() noexcept;
 	uint32_t getColor() const noexcept;
-	
 	friend class Board;
-
 
 protected:
 	std::vector<std::vector<uint8_t>> points;
@@ -30,3 +29,4 @@ protected:
 	int m_offsetY = 0;
 	uint32_t m_Color = 0;
 };
+

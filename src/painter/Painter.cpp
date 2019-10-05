@@ -2,20 +2,16 @@
 #include <cassert>
 
 
-void Painter::drawFigure(const Figure &figure, bool draw, char ch) const {
+void Painter::drawFigure(const Figure &figure, bool draw, char symbol) const {
 	const auto& points = figure.getPoints();
 	assert(!points.empty());
 	const int xOffset = figure.getXOffset();
 	const int yOffset = figure.getYOffset();
 	uint32_t color = 0;
 	uint32_t textColor = Board::textColor;
-	char symbol = Board::bufferFreeSymbol;
-	if (ch != 0)
-		symbol = ch;
 	if (draw) {
 		color = figure.getColor();
 		textColor = figure.getColor();
-		symbol = Board::figureSymbol;
 	}
 	
 	for (auto i = 0; i < points.size(); ++i) {
@@ -154,11 +150,11 @@ void Painter::setScreenSize() {
 	InsidePainter::setScreenSize();
 }
 
-uint32_t Painter::getScreenWidth() {
+uint32_t Painter::getWinWidth() {
 	return InsidePainter::screenWidth;
 }
 
-uint32_t Painter::getScreenHeight() {
+uint32_t Painter::getWinHeight() {
 	return InsidePainter::screenHeight;
 }
 
@@ -166,3 +162,15 @@ void Painter::setXY(uint32_t x, uint32_t y) {
 	xOffsetBoard = x;
 	yOffsetBoard = y;
 }
+
+void Painter::drawHead() {
+	const std::string startStr = " T E T R I S ";
+	clearScreen();
+	printColoredText(
+		startStr,
+		getWinWidth() / 2 - startStr.size() / 2,
+		getWinHeight() / 2,
+		6,
+		12);
+}
+

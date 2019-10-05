@@ -58,7 +58,7 @@ bool Board::verifyLines() {
 	return foundAtLeastOneFilledLine;
 }
 
-std::string Board::getNumberOfErasedLinesStr() {
+std::string Board::getCountOfLinesStr() {
 	
 	return std::move(std::string("Lines: ") + std::to_string(m_nErasedLines));
 }

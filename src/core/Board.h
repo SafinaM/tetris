@@ -36,7 +36,7 @@ struct Board final: Singleton<Board> {
 	bool allowRotate(const Figure &figure) const;
 	
 	void clear();
-	std::string getNumberOfErasedLinesStr();
+	std::string getCountOfLinesStr();
 	std::string getLevelStr();
 	uint32_t getNumberOfErasedLines();
 	bool levelIsChanged();

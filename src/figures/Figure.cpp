@@ -2,9 +2,6 @@
 #include <cassert>
 #include <rlutil.h>
 #include "Figure.h"
-#include "LLFigure.h"
-#include "LRFigure.h"
-#include "IFigure.h"
 
 Figure::~Figure() {
 
@@ -29,7 +26,6 @@ void Figure::move(Direction direction) noexcept {
 	}
 }
 
-// for debug
 void Figure::setXY(int x, int y) noexcept {
 	m_offsetX = x;
 	m_offsetY = y;
@@ -63,3 +59,4 @@ void Figure::debugPrint() noexcept {
 	rlutil::resetColor();
 	
 }
+
