@@ -2,7 +2,7 @@
 #include <cassert>
 
 
-void Painter::drawFigure(const Figure& figure, bool draw) const {
+void Painter::drawFigure(const Figure &figure, bool draw, char ch) const {
 	const auto& points = figure.getPoints();
 	assert(!points.empty());
 	const int xOffset = figure.getXOffset();
@@ -10,6 +10,8 @@ void Painter::drawFigure(const Figure& figure, bool draw) const {
 	uint32_t color = 0;
 	uint32_t textColor = Board::textColor;
 	char symbol = Board::bufferFreeSymbol;
+	if (ch != 0)
+		symbol = ch;
 	if (draw) {
 		color = figure.getColor();
 		textColor = figure.getColor();
@@ -21,8 +23,12 @@ void Painter::drawFigure(const Figure& figure, bool draw) const {
 			if (points[i][j]) {
 				assert(j + xOffset + xOffsetBoard >= 0);
 				assert(i + yOffset +  yOffsetBoard >= 0);
-				// 4 - is Red
-				drawPoint(j + xOffset + xOffsetBoard, i + yOffset +  yOffsetBoard, symbol, color, textColor);
+				drawPoint(
+					j + xOffset + xOffsetBoard,
+					i + yOffset +  yOffsetBoard,
+					symbol,
+					color,
+					textColor);
 			}
 		}
 		std::cout << std::endl;
@@ -68,6 +74,8 @@ void InsidePainter::drawPoint(uint32_t x, uint32_t y, char ch, uint32_t color, u
 	rlutil::resetColor();
 }
 
+
+
 void InsidePainter::clearScreen() const {
 	rlutil::cls();
 }
@@ -99,6 +107,40 @@ void InsidePainter::setScreenSize() {
 
 bool Painter::isScreenSizeChanged() {
 	return screenSizeChanged;
+}
+void Painter::drawRectangle(
+	uint32_t x,
+	uint32_t y,
+	uint32_t width,
+	uint32_t height,
+	char ch,
+	uint32_t color,
+	uint32_t textColor) const {
+	
+	InsidePainter::drawRectangle(
+		x,
+		y,
+		width,
+		height,
+		ch,
+		color,
+		textColor);
+}
+
+void InsidePainter::drawRectangle(
+	uint32_t x,
+	uint32_t y,
+	uint32_t width,
+	uint32_t height,
+	char ch,
+	uint32_t color,
+	uint32_t textColor) const {
+	
+	for (uint32_t i = y; i < y + height; ++i) {
+		for (uint32_t j = x; j < x + width; ++j) {
+			drawPoint(j, i, ch, color, textColor);
+		}
+	}
 }
 
 void InsidePainter::hideCursor() const {

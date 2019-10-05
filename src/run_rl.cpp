@@ -33,22 +33,15 @@ void echo() {
 	tcsetattr(STDIN_FILENO, TCSANOW, &dt);
 }
 
-static std::vector<uint32_t> generateSequence(uint32_t numberOfFigures) {
+uint32_t generateNumber(uint32_t downLimit, uint32_t upLimit) {
 	std::random_device rd;
-	std::vector<uint32_t> res;
-	res.reserve(numberOfFigures);
-	while (numberOfFigures > 0) {
-		std::uniform_int_distribution<int> distribution(0, 6);
-		uint32_t n = distribution(rd);
-		res.emplace_back(std::move(n));
-		--numberOfFigures;
-	}
-
-	return res;
+	std::uniform_int_distribution<uint32_t> distribution(downLimit, upLimit);
+	return distribution(rd);
 }
 
-void generateFigure(std::unique_ptr<Figure>& figure, uint32_t number) {
-
+void generateFigure(std::unique_ptr<Figure>& figure) {
+	
+	uint32_t number = generateNumber(0, 6);
 	switch(number) {
 		case 0:
 			figure.reset(new IFigure);
@@ -80,11 +73,9 @@ void generateFigure(std::unique_ptr<Figure>& figure, uint32_t number) {
 
 int main() {
 	
-	
-	auto tmp = ZFigure();
-	std::unique_ptr<Figure> prevFigure;
+	std::unique_ptr<Figure> nextFigure;
 	std::unique_ptr<Figure> figure;
-	int ch;
+	int ch = 0;
 	std::vector<std::vector<uint8_t>> points;
 	Board& board = Board::instance();
 	auto start = std::chrono::system_clock::now();
@@ -92,37 +83,48 @@ int main() {
 	painter.hideCursor();
 	painter.clearScreen();
 	const std::string gameOverStr = " GAME OVER!!! press Q - to quite, any other key - to repeat! ";
+	painter.setXY(
+		(painter.getScreenWidth() - Board::widthBoard) / 2,
+		(painter.getScreenHeight() - Board::heightBoard) / 2);
 	
-	int x = painter.getScreenWidth();
-	int y = painter.getScreenHeight();
-	painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);
 	painter.drawBoard(board);
 	const double originTimePeriod = 1.2;
 	double currentTimePeriod = originTimePeriod;
-	auto sequence = generateSequence(7);
+	generateFigure(figure);
 	
 	while(true) {
 		if (ch == 'q')
 			break;
-		generateFigure(figure, *std::prev(sequence.end()));
-		if (sequence.size() > 0)
-			sequence.pop_back();
-		else
-			sequence = generateSequence(7);
+		generateFigure(nextFigure);
+		nextFigure->setXY(Board::widthBoard + 4, 6);
+		painter.drawFigure(*nextFigure, false, ' ');
 		figure->setXY(Board::widthBoard / 2 - 1, 0);
 		noecho();
 		while (true) {
 			painter.setScreenSize();
 			if (painter.isScreenSizeChanged()) {
 				painter.clearScreen();
-				x = painter.getScreenWidth();
-				y = painter.getScreenHeight();
-				painter.setXY((x - Board::widthBoard) / 2, (y - Board::heightBoard) / 2);
+				painter.setXY(
+					(painter.getScreenWidth() - Board::widthBoard) / 2,
+					(painter.getScreenHeight() - Board::heightBoard) / 2);
 				painter.drawBoard(board);
+				painter.printColoredText(
+					board.getNumberOfErasedLinesStr(),
+					painter.xOffsetBoard + Board::widthBoard + 4,
+					painter.yOffsetBoard,
+					0,
+					2);
+				
+				painter.printColoredText(
+					board.getLevelStr(),
+					painter.xOffsetBoard + Board::widthBoard + 4,
+					painter.yOffsetBoard + 3,
+					0,
+					2);
 			}
 			if (kbhit()) {
 				// erase prev figure!!!
-				painter.drawFigure(*figure, false);
+				painter.drawFigure(*figure, false, 0);
 				ch = rlutil::getkey();
 				switch (ch) {
 					case 'w':
@@ -161,7 +163,7 @@ int main() {
 			auto end = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = end-start;
 			if (diff.count() > currentTimePeriod) {
-				painter.drawFigure(*figure, false);
+				painter.drawFigure(*figure, false, 0);
 				start = std::chrono::system_clock::now();
 				diff.zero();
 				if (board.allowMove(Direction::Down, *figure)) {
@@ -169,7 +171,12 @@ int main() {
 				} else {
 					if (figure->getYOffset() <= 0) {
 						painter.clearScreen();
-						painter.printColoredText(gameOverStr, x / 2 - gameOverStr.size() / 2, y / 2, 6, 12);
+						painter.printColoredText(
+							gameOverStr,
+							painter.getScreenWidth() / 2 - gameOverStr.size() / 2,
+							painter.getScreenWidth() / 2,
+							6,
+							12);
 						ch = getchar();
 						if (ch == 'q')
 							break;
@@ -180,13 +187,37 @@ int main() {
 						break;
 					}
 					board.addFigureToBuffer(*figure);
+					painter.drawFigure(*nextFigure, false, ' ');
+					figure = std::move(nextFigure);
+					
 					painter.drawBoard(board);
-					if (board.verifyLines())
+					if (board.verifyLines()) {
+						// TODO move in one method
+						painter.printColoredText(
+							board.getNumberOfErasedLinesStr(),
+							painter.xOffsetBoard + Board::widthBoard + 4,
+							painter.yOffsetBoard,
+							0,
+							2);
+						if (board.levelIsChanged()) {
+							currentTimePeriod -= 0.1;
+							auto color = generateNumber(1, 7);
+							Board::backGroundColor = color;
+							painter.printColoredText(
+								board.getLevelStr(),
+								painter.xOffsetBoard + Board::widthBoard + 4,
+								painter.yOffsetBoard + 3,
+								0,
+								2);
+						}
 						painter.drawBoard(board);
+					}
 					break;
 				}
 			}
 			painter.drawFigure(*figure);
+			painter.drawFigure(*nextFigure);
+			
 		} // one figure movement
 	}     // main cycle
 	

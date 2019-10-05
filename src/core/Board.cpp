@@ -11,6 +11,8 @@ void Board::debugPrint() const {
 	}
 }
 
+uint32_t Board::backGroundColor = 6;
+
 void Board::addFigureToBuffer(const Figure& figure) {
 	const auto& points = figure.points;
 	int xOffset = figure.getXOffset();
@@ -30,9 +32,11 @@ void Board::addFigureToBuffer(const Figure& figure) {
 
 bool Board::verifyLines() {
 	bool foundAtLeastOneFilledLine = false;
+	m_levelIsChanged = false;
 	for (auto i = m_minNoneZeroY; i < heightBoard; ++i) {
 		// erase full line and insert empty line at the begin of vector - not effective way
 		if (verifyLine(i)) {
+			++m_nErasedLines;
 			resetLine(i);
 			// lower all lines one level below
 			for (auto k = i; k > m_minNoneZeroY; --k) {
@@ -41,12 +45,31 @@ bool Board::verifyLines() {
 			foundAtLeastOneFilledLine = true;
 			// line was erased, the with non zero number is decreased
 			++m_minNoneZeroY;
+			if (m_nErasedLines % Board::levelNumberOfLines == 0) {
+				++m_level;
+				m_levelIsChanged = true;
+			}
 		}
 	}
 	
-	if (foundAtLeastOneFilledLine)
+	if (foundAtLeastOneFilledLine) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+	}
 	return foundAtLeastOneFilledLine;
+}
+
+std::string Board::getNumberOfErasedLinesStr() {
+	
+	return std::move(std::string("Lines: ") + std::to_string(m_nErasedLines));
+}
+
+std::string Board::getLevelStr() {
+	
+	return std::move(std::string("Level: ") + std::to_string(m_level));
+}
+
+uint32_t Board::getNumberOfErasedLines() {
+	return m_nErasedLines;
 }
 
 bool Board::verifyLine(uint32_t numY) {
@@ -56,6 +79,10 @@ bool Board::verifyLine(uint32_t numY) {
 				return false;
 	}
 	return true;
+}
+
+bool Board::levelIsChanged() {
+	return m_levelIsChanged;
 }
 
 void Board::swapLines(uint32_t i, uint32_t j) {

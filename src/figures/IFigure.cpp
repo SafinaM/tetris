@@ -17,15 +17,15 @@ std::vector<std::vector<uint8_t>> IFigure::getPoints(Orientation orientation) co
 	assert(m_orientation == Orientation::First_0 || m_orientation == Orientation::Third_180);
 	switch (orientation) {
 		case Orientation::First_0: {
-			return {{0, 0, 1, 0},
-					{0, 0, 1, 0},
-					{0, 0, 1, 0},
-					{0, 0, 1, 0}};
+			return {{0, 1, 0, 0},
+					{0, 1, 0, 0},
+					{0, 1, 0, 0},
+					{0, 1, 0, 0}};
 		}
 		case Orientation::Third_180: {
 			return {{0, 0, 0, 0},
-					{0, 0, 0, 0},
 					{1, 1, 1, 1},
+					{0, 0, 0, 0},
 					{0, 0, 0, 0}};
 		}
 	}

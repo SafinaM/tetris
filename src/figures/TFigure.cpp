@@ -2,7 +2,7 @@
 #include <iostream>
 
 TFigure::TFigure() {
-	m_orientation = Orientation::Third_180;
+	m_orientation = Orientation::First_0;
 	points = getPoints(m_orientation);
 	m_Color = 1; // Blue
 }

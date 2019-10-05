@@ -11,6 +11,14 @@ protected:
 	void setScreenSize();
 	void hideCursor() const;
 	void showCursor() const;
+	void drawRectangle(
+		uint32_t x,
+		uint32_t y,
+		uint32_t width,
+		uint32_t height,
+		char ch,
+		uint32_t,
+		uint32_t textColor) const;
 	bool screenSizeChanged = false;
 };
 
@@ -18,7 +26,7 @@ struct Painter: protected InsidePainter, Singleton<Painter> {
 	Painter(token) {
 	}
 	~Painter() {}
-	void drawFigure(const Figure& figure, bool draw = true) const;
+	void drawFigure(const Figure &figure, bool draw = true, char ch = 0) const;
 	void drawBoard(const Board &board) const;
 	void drawPoint(uint32_t x, uint32_t y, char ch, uint32_t color, uint32_t textColor = 0) const;
 	void clearScreen() const;
@@ -35,6 +43,14 @@ struct Painter: protected InsidePainter, Singleton<Painter> {
 	void setXY(uint32_t x, uint32_t y);
 	uint32_t getScreenWidth();
 	uint32_t getScreenHeight();
+	void drawRectangle(
+		uint32_t x,
+		uint32_t y,
+		uint32_t width,
+		uint32_t height,
+		char ch = 0,
+		uint32_t color = 0,
+		uint32_t textColor = 0) const;
 	uint32_t xOffsetBoard = 0;
 	uint32_t yOffsetBoard = 0;
 };
