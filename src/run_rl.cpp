@@ -21,15 +21,13 @@ void echo() {
 int main() {
 	std::unique_ptr<Figure> nextFigure;
 	std::unique_ptr<Figure> figure;
-	int ch = 0;
-	std::vector<std::vector<uint8_t>> points;
 	Board& board = Board::instance();
 	auto start = std::chrono::system_clock::now();
 	Painter& painter = Painter::instance();
 	painter.hideCursor();
 	
 	painter.drawHead(" T E T R I S ");
-	ch = getch();
+	int ch = getch();
 	
 	painter.setXY(
 		(painter.getWinWidth() - Board::widthBoard) / 2,
@@ -38,8 +36,6 @@ int main() {
 	painter.drawBoard(board);
 	painter.redrawCounters(board);
 	
-	const double originTimePeriod = 1.2;
-	double currentTimePeriod = originTimePeriod;
 	helper::generateFigure(figure);
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	noecho();
@@ -128,7 +124,7 @@ int main() {
 			
 			auto end = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = end-start;
-			if (diff.count() > currentTimePeriod) {
+			if (diff.count() > Board::currentTimePeriod) {
 				// erase prev figure!!!
 				painter.drawFigure(*figure, false, Board::bufferFreeSymbol);
 				start = std::chrono::system_clock::now();
@@ -145,7 +141,7 @@ int main() {
 							break;
 						board.clear();
 						painter.clearScreen();
-						currentTimePeriod = originTimePeriod;
+						Board::currentTimePeriod = Board::originTimePeriod;
 						painter.drawBoard(board);
 						painter.redrawCounters(board);
 						break;
@@ -163,7 +159,7 @@ int main() {
 					painter.drawBoard(board);
 					if (board.verifyLines()) {
 						if (board.levelIsChanged()) {
-							currentTimePeriod -= 0.05;
+							Board::currentTimePeriod -= 0.1;
 							Board::backGroundColor = helper::generateNumber(1, 7);
 						}
 						painter.redrawCounters(board);

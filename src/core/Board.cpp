@@ -11,7 +11,10 @@ void Board::debugPrint() const {
 	}
 }
 
+// yellow
 uint32_t Board::backGroundColor = 6;
+double Board::currentTimePeriod = originTimePeriod;
+
 
 void Board::addFigureToBuffer(const Figure& figure) {
 	const auto& points = figure.points;

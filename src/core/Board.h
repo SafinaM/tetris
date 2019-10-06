@@ -14,10 +14,12 @@ struct Board final: Singleton<Board> {
 	constexpr static uint32_t textColor = 15;
 	constexpr static uint32_t bufferFreeSymbol = '.';
 	constexpr static uint32_t bufferBusySymbol = '#';
-	constexpr static uint32_t figureSymbol = ' ';
-	constexpr static uint32_t levelNumberOfLines = 10;
-	// yellow
+	constexpr static uint32_t levelNumberOfLines = 20;
+	constexpr static double originTimePeriod = 1.5;
+	
 	static uint32_t backGroundColor;
+	static double currentTimePeriod;
+	
 	uint8_t buffer[heightBoard][widthBoard] = {};
 	
 	Board(token) {
