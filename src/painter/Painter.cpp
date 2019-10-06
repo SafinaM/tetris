@@ -1,4 +1,5 @@
 #include "Painter.h"
+#include "PainterImpl.h"
 #include <cassert>
 
 
@@ -37,14 +38,14 @@ void Painter::drawBoard(const Board &board) const {
 		for (uint8_t j = 0; j < Board::widthBoard; ++j) {
 			// 0 - is Black
 			if (!buffer[i][j])
-				InsidePainter::drawPoint(
+				m_painter->drawPoint(
 					j + xOffsetBoard,
 					i + yOffsetBoard,
 					Board::bufferFreeSymbol,
 					0,
 					Board::textColor);
 			else
-				InsidePainter::drawPoint(
+				m_painter->drawPoint(
 					j + xOffsetBoard,
 					i + yOffsetBoard,
 					Board::bufferBusySymbol,
@@ -57,56 +58,34 @@ void Painter::drawBoard(const Board &board) const {
 
 void
 Painter::printColoredText(const std::string &text, uint32_t x, uint32_t y, uint32_t color, uint32_t textColor) {
-		for (auto i = 0; i < text.size(); ++i) {
-			InsidePainter::drawPoint(x + i, y, text[i], color, textColor);
-		}
+	for (auto i = 0; i < text.size(); ++i) {
+		m_painter->drawPoint(x + i, y, text[i], color, textColor);
+	}
 }
 
-void InsidePainter::drawPoint(uint32_t x, uint32_t y, char ch, uint32_t color, uint32_t textColor) const {
-	rlutil::locate(x, y);
-	rlutil::setColor(textColor);
-	rlutil::setBackgroundColor(color);
-	std::cout << ch;
-	rlutil::resetColor();
-}
-
-
-
-void InsidePainter::clearScreen() const {
-	rlutil::cls();
-}
 
 void Painter::drawPoint(uint32_t x, uint32_t y, char ch, uint32_t color, uint32_t textColor) const {
-	InsidePainter::drawPoint(x, y, ch, color, textColor);
+	m_painter->drawPoint(x, y, ch, color, textColor);
 }
 
-void Painter::clearScreen() const {
-	InsidePainter::clearScreen();
+void Painter::clearScreen() const noexcept {
+	m_painter->clearScreen();
 }
 
-void Painter::hideCursor() const {
-	InsidePainter::hideCursor();
+void Painter::hideCursor() const noexcept {
+	m_painter->hideCursor();
 }
 
 void Painter::showCursor() const {
-	InsidePainter::showCursor();
+	m_painter->showCursor();
 }
 
-void InsidePainter::setScreenSize() {
-	if (screenWidth != rlutil::tcols() || screenHeight != rlutil::trows()) {
-		screenWidth = rlutil::tcols();
-		screenHeight = rlutil::trows();
-		screenSizeChanged = true;
-	} else
-		screenSizeChanged = false;
-}
-
-bool Painter::isScreenSizeChanged() {
-	return screenSizeChanged;
+bool Painter::isScreenSizeChanged() noexcept {
+	return m_painter->screenSizeChanged;
 }
 
 bool Painter::isSizeOk() {
-	return screenWidth >= m_minimalWidth && screenHeight >= m_minimalHeight;
+	return m_painter->isSizeOk();
 }
 
 void Painter::drawRectangle(
@@ -118,7 +97,7 @@ void Painter::drawRectangle(
 	uint32_t color,
 	uint32_t textColor) const {
 	
-	InsidePainter::drawRectangle(
+	m_painter->drawRectangle(
 		x,
 		y,
 		width,
@@ -128,39 +107,17 @@ void Painter::drawRectangle(
 		textColor);
 }
 
-void InsidePainter::drawRectangle(
-	uint32_t x,
-	uint32_t y,
-	uint32_t width,
-	uint32_t height,
-	char ch,
-	uint32_t color,
-	uint32_t textColor) const {
-	
-	for (uint32_t i = y; i < y + height; ++i) {
-		for (uint32_t j = x; j < x + width; ++j) {
-			drawPoint(j, i, ch, color, textColor);
-		}
-	}
-}
-
-void InsidePainter::hideCursor() const {
-	rlutil::hidecursor();
-}
-void InsidePainter::showCursor() const {
-	rlutil::showcursor();
-}
 
 void Painter::setScreenSize() {
-	InsidePainter::setScreenSize();
+	m_painter->setScreenSize();
 }
 
 uint32_t Painter::getWinWidth() {
-	return InsidePainter::screenWidth;
+	return m_painter->screenWidth;
 }
 
 uint32_t Painter::getWinHeight() {
-	return InsidePainter::screenHeight;
+	return m_painter->screenHeight;
 }
 
 void Painter::setXY(uint32_t x, uint32_t y) {

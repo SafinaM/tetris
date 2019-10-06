@@ -19,7 +19,6 @@ void echo() {
 }
 
 int main() {
-	
 	std::unique_ptr<Figure> nextFigure;
 	std::unique_ptr<Figure> figure;
 	int ch = 0;
@@ -31,12 +30,12 @@ int main() {
 	
 	painter.drawHead(" T E T R I S ");
 	ch = getch();
+	
 	painter.setXY(
 		(painter.getWinWidth() - Board::widthBoard) / 2,
 		(painter.getWinHeight() - Board::heightBoard) / 2);
 	painter.clearScreen();
 	painter.drawBoard(board);
-	
 	painter.redrawCounters(board);
 	
 	const double originTimePeriod = 1.2;
@@ -57,6 +56,7 @@ int main() {
 			4,
 			2);
 		figure->setXY(Board::widthBoard / 2 - 1, 0);
+		
 		while (true) {
 			bool wasStopped = false;
 			painter.setScreenSize();
@@ -137,8 +137,8 @@ int main() {
 					figure->move(Direction::Down);
 				} else {
 					if (figure->getYOffset() <= 0) {
-						painter.clearScreen();
 						// game over
+						painter.clearScreen();
 						painter.drawHead(gameOverStr);
 						ch = getch();
 						if (ch == 'q')
@@ -157,13 +157,13 @@ int main() {
 						painter.yOffsetBoard + 6,
 						4,
 						2);
+					
 					figure = std::move(nextFigure);
 					
 					painter.drawBoard(board);
 					if (board.verifyLines()) {
-						// TODO move in one method
 						if (board.levelIsChanged()) {
-							currentTimePeriod -= 0.1;
+							currentTimePeriod -= 0.05;
 							Board::backGroundColor = helper::generateNumber(1, 7);
 						}
 						painter.redrawCounters(board);
