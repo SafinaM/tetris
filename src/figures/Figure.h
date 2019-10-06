@@ -20,7 +20,6 @@ struct Figure {
 	int getYOffset() const noexcept;
 	void debugPrint() noexcept;
 	uint32_t getColor() const noexcept;
-	friend class Board;
 
 protected:
 	std::vector<std::vector<uint8_t>> points;

@@ -17,7 +17,7 @@ double Board::currentTimePeriod = originTimePeriod;
 
 
 void Board::addFigureToBuffer(const Figure& figure) {
-	const auto& points = figure.points;
+	const auto& points = figure.getPoints();
 	int xOffset = figure.getXOffset();
 	int yOffset = figure.getYOffset();
 	for (auto i = 0; i < points.size(); ++i) {
@@ -154,7 +154,7 @@ bool Board::isCrossedFigureWithWalls(
 }
 
 bool Board::allowMove(Direction direction, const Figure &figure) const {
-	const auto& points = figure.points;
+	const auto& points = figure.getPoints();
 	int xOffset = figure.getXOffset();
 	int yOffset = figure.getYOffset();
 	
