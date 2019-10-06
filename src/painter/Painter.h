@@ -7,7 +7,7 @@ struct InsidePainter {
 	uint32_t screenHeight = rlutil::trows();
 	
 protected:
-	const  uint32_t m_minimalWidth = 30;
+	const  uint32_t m_minimalWidth = 40;
 	const  uint32_t m_minimalHeight = 20;
 	void drawPoint(uint32_t x, uint32_t y, char ch, uint32_t color, uint32_t textColor = 0) const;
 	void clearScreen() const;

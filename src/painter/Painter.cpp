@@ -192,6 +192,13 @@ void Painter::redrawCounters(const Board& board) noexcept {
 		yOffsetBoard + 3,
 		0,
 		2);
+	
+	printColoredText(
+		"Q - quite, P - pause",
+		xOffsetBoard + Board::widthBoard + 4,
+		yOffsetBoard + 9,
+		0,
+		2);
 }
 
 

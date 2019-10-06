@@ -1,11 +1,5 @@
-#include <memory>
 #include <thread>
-#include <iostream>
-#include <random>
-#include <cassert>
-#include <Point.h>
 #include <Board.h>
-//#include <rlutil.h>
 #include <Painter.h>
 #include <helper.h>
 
@@ -54,6 +48,7 @@ int main() {
 	while(true) {
 		if (ch == 'q')
 			break;
+
 		helper::generateFigure(nextFigure);
 		nextFigure->setXY(Board::widthBoard + 4, 6);
 		painter.drawRectangle(
@@ -63,14 +58,21 @@ int main() {
 			2);
 		figure->setXY(Board::widthBoard / 2 - 1, 0);
 		while (true) {
+			bool wasStopped = false;
 			painter.setScreenSize();
+			if (ch == 'p') {
+				painter.clearScreen();
+				painter.drawHead("Pause! Press any key!");
+				wasStopped = true;
+				ch = getch();
+			}
 			if (!painter.isSizeOk()) {
 				painter.clearScreen();
 				painter.drawHead("SMALL WIN SIZE! Press any key!");
-				painter.setScreenSize();
 				getch();
 			}
-			if (painter.isScreenSizeChanged() && painter.isSizeOk()) {
+
+			if (painter.isScreenSizeChanged() && painter.isSizeOk() || wasStopped) {
 				painter.clearScreen();
 				painter.setXY(
 					(painter.getWinWidth() - Board::widthBoard) / 2,
@@ -138,7 +140,7 @@ int main() {
 						painter.clearScreen();
 						// game over
 						painter.drawHead(gameOverStr);
-						ch = getchar();
+						ch = getch();
 						if (ch == 'q')
 							break;
 						board.clear();
