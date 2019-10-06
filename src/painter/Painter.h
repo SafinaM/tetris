@@ -2,7 +2,6 @@
 #include <Board.h>
 #include <rlutil.h>
 struct InsidePainter {
-	// standard ubuntu terminal size
 	uint32_t screenWidth = rlutil::tcols();
 	uint32_t screenHeight = rlutil::trows();
 protected:
@@ -51,7 +50,8 @@ struct Painter: protected InsidePainter, Singleton<Painter> {
 		char ch = ' ',
 		uint32_t color = 0,
 		uint32_t textColor = 0) const;
-	void drawHead();
+	void drawHead(const std::string &head) noexcept;
+	void redrawCounters(const Board& board) noexcept;
 	uint32_t xOffsetBoard = 0;
 	uint32_t yOffsetBoard = 0;
 };

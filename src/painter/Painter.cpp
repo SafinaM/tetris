@@ -163,14 +163,30 @@ void Painter::setXY(uint32_t x, uint32_t y) {
 	yOffsetBoard = y;
 }
 
-void Painter::drawHead() {
+void Painter::drawHead(const std::string &head) noexcept {
 	clearScreen();
-	const std::string startStr = " T E T R I S ";
 	printColoredText(
-		startStr,
-		getWinWidth() / 2 - startStr.size() / 2,
+		head,
+		getWinWidth() / 2 - head.size() / 2,
 		getWinHeight() / 2,
 		0,
 		2);
 }
+
+void Painter::redrawCounters(const Board& board) noexcept {
+	printColoredText(
+		board.getCountOfLinesStr(),
+		xOffsetBoard + Board::widthBoard + 4,
+		yOffsetBoard,
+		0,
+		2);
+	
+	printColoredText(
+		board.getLevelStr(),
+		xOffsetBoard + Board::widthBoard + 4,
+		yOffsetBoard + 3,
+		0,
+		2);
+}
+
 

@@ -35,26 +35,15 @@ int main() {
 	Painter& painter = Painter::instance();
 	painter.hideCursor();
 	
-	painter.drawHead();
+	painter.drawHead(" T E T R I S ");
 	ch = getch();
 	painter.clearScreen();
-	
 	painter.setXY(
 		(painter.getWinWidth() - Board::widthBoard) / 2,
 		(painter.getWinHeight() - Board::heightBoard) / 2);
 	painter.drawBoard(board);
-	painter.printColoredText(
-		board.getCountOfLinesStr(),
-		painter.xOffsetBoard + Board::widthBoard + 4,
-		painter.yOffsetBoard,
-		0,
-		2);
-	painter.printColoredText(
-		board.getLevelStr(),
-		painter.xOffsetBoard + Board::widthBoard + 4,
-		painter.yOffsetBoard + 3,
-		0,
-		2);
+	
+	painter.redrawCounters(board);
 	
 	const double originTimePeriod = 1.2;
 	double currentTimePeriod = originTimePeriod;
@@ -67,7 +56,7 @@ int main() {
 		nextFigure->setXY(Board::widthBoard + 4, 6);
 		painter.drawRectangle(
 			painter.xOffsetBoard + Board::widthBoard + 4,
-			8,
+			painter.yOffsetBoard + 6,
 			4,
 			2);
 		painter.drawFigure(*nextFigure, false, Board::bufferFreeSymbol);
@@ -81,18 +70,13 @@ int main() {
 					(painter.getWinWidth() - Board::widthBoard) / 2,
 					(painter.getWinHeight() - Board::heightBoard) / 2);
 				painter.drawBoard(board);
-				painter.printColoredText(
-					board.getCountOfLinesStr(),
-					painter.xOffsetBoard + Board::widthBoard + 4,
-					painter.yOffsetBoard,
-					0,
-					2);
+				painter.redrawCounters(board);
 				
-				painter.printColoredText(
-					board.getLevelStr(),
+				nextFigure->setXY(Board::widthBoard + 4, 6);
+				painter.drawRectangle(
 					painter.xOffsetBoard + Board::widthBoard + 4,
-					painter.yOffsetBoard + 3,
-					0,
+					painter.yOffsetBoard + 6,
+					4,
 					2);
 			}
 			if (kbhit()) {
@@ -146,12 +130,7 @@ int main() {
 					if (figure->getYOffset() <= 0) {
 						painter.clearScreen();
 						// game over
-						painter.printColoredText(
-							gameOverStr,
-							painter.getWinWidth() / 2 - gameOverStr.size() / 2,
-							painter.getWinHeight() / 2,
-							6,
-							12);
+						painter.drawHead(gameOverStr);
 						ch = getchar();
 						if (ch == 'q')
 							break;
@@ -159,13 +138,14 @@ int main() {
 						painter.clearScreen();
 						currentTimePeriod = originTimePeriod;
 						painter.drawBoard(board);
+						painter.redrawCounters(board);
 						break;
 					}
 					board.addFigureToBuffer(*figure);
 					painter.drawFigure(*nextFigure, false);
 					painter.drawRectangle(
 						painter.xOffsetBoard + Board::widthBoard + 4,
-						8,
+						painter.yOffsetBoard + 6,
 						4,
 						2);
 					figure = std::move(nextFigure);
@@ -173,23 +153,11 @@ int main() {
 					painter.drawBoard(board);
 					if (board.verifyLines()) {
 						// TODO move in one method
-						painter.printColoredText(
-							board.getCountOfLinesStr(),
-							painter.xOffsetBoard + Board::widthBoard + 4,
-							painter.yOffsetBoard,
-							0,
-							2);
 						if (board.levelIsChanged()) {
 							currentTimePeriod -= 0.1;
-							auto color = helper::generateNumber(1, 7);
-							Board::backGroundColor = color;
-							painter.printColoredText(
-								board.getLevelStr(),
-								painter.xOffsetBoard + Board::widthBoard + 4,
-								painter.yOffsetBoard + 3,
-								0,
-								2);
+							Board::backGroundColor = helper::generateNumber(1, 7);
 						}
+						painter.redrawCounters(board);
 						painter.drawBoard(board);
 					}
 					break;

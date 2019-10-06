@@ -58,17 +58,17 @@ bool Board::verifyLines() {
 	return foundAtLeastOneFilledLine;
 }
 
-std::string Board::getCountOfLinesStr() {
+std::string Board::getCountOfLinesStr() const noexcept {
 	
 	return std::move(std::string("Lines: ") + std::to_string(m_nErasedLines));
 }
 
-std::string Board::getLevelStr() {
+std::string Board::getLevelStr() const noexcept {
 	
 	return std::move(std::string("Level: ") + std::to_string(m_level));
 }
 
-uint32_t Board::getNumberOfErasedLines() {
+uint32_t Board::getNumberOfErasedLines() const noexcept {
 	return m_nErasedLines;
 }
 
