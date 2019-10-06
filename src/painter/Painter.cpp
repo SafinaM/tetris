@@ -104,6 +104,11 @@ void InsidePainter::setScreenSize() {
 bool Painter::isScreenSizeChanged() {
 	return screenSizeChanged;
 }
+
+bool Painter::isSizeOk() {
+	return screenWidth >= m_minimalWidth && screenHeight >= m_minimalHeight;
+}
+
 void Painter::drawRectangle(
 	uint32_t x,
 	uint32_t y,

@@ -5,7 +5,7 @@
 #include <cassert>
 #include <Point.h>
 #include <Board.h>
-#include <rlutil.h>
+//#include <rlutil.h>
 #include <Painter.h>
 #include <helper.h>
 
@@ -37,10 +37,10 @@ int main() {
 	
 	painter.drawHead(" T E T R I S ");
 	ch = getch();
-	painter.clearScreen();
 	painter.setXY(
 		(painter.getWinWidth() - Board::widthBoard) / 2,
 		(painter.getWinHeight() - Board::heightBoard) / 2);
+	painter.clearScreen();
 	painter.drawBoard(board);
 	
 	painter.redrawCounters(board);
@@ -49,6 +49,8 @@ int main() {
 	double currentTimePeriod = originTimePeriod;
 	helper::generateFigure(figure);
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
+	noecho();
+	
 	while(true) {
 		if (ch == 'q')
 			break;
@@ -59,12 +61,16 @@ int main() {
 			painter.yOffsetBoard + 6,
 			4,
 			2);
-		painter.drawFigure(*nextFigure, false, Board::bufferFreeSymbol);
 		figure->setXY(Board::widthBoard / 2 - 1, 0);
-		noecho();
 		while (true) {
 			painter.setScreenSize();
-			if (painter.isScreenSizeChanged()) {
+			if (!painter.isSizeOk()) {
+				painter.clearScreen();
+				painter.drawHead("SMALL WIN SIZE! Press any key!");
+				painter.setScreenSize();
+				getch();
+			}
+			if (painter.isScreenSizeChanged() && painter.isSizeOk()) {
 				painter.clearScreen();
 				painter.setXY(
 					(painter.getWinWidth() - Board::widthBoard) / 2,
@@ -79,6 +85,7 @@ int main() {
 					4,
 					2);
 			}
+
 			if (kbhit()) {
 				// erase prev figure!!!
 				painter.drawFigure(*figure, false, Board::bufferFreeSymbol);

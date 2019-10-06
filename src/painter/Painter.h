@@ -2,9 +2,13 @@
 #include <Board.h>
 #include <rlutil.h>
 struct InsidePainter {
+	
 	uint32_t screenWidth = rlutil::tcols();
 	uint32_t screenHeight = rlutil::trows();
+	
 protected:
+	const  uint32_t m_minimalWidth = 30;
+	const  uint32_t m_minimalHeight = 20;
 	void drawPoint(uint32_t x, uint32_t y, char ch, uint32_t color, uint32_t textColor = 0) const;
 	void clearScreen() const;
 	void setScreenSize();
@@ -39,6 +43,7 @@ struct Painter: protected InsidePainter, Singleton<Painter> {
 		uint32_t color,
 		uint32_t textColor);
 	bool isScreenSizeChanged();
+	bool isSizeOk();
 	void setXY(uint32_t x, uint32_t y);
 	uint32_t getWinWidth();
 	uint32_t getWinHeight();
