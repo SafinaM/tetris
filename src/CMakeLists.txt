@@ -18,15 +18,9 @@ include_directories(helpers)
 include_directories(painter)
 add_subdirectory("${CMAKE_SOURCE_DIR}/../rlutil" "${CMAKE_BINARY_DIR}/rlutil")
 
-set(CMAKE_CXX_FLAGS "-lncurses")
-find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})
 
 file(GLOB SOURCES figures/*.cpp core/*.cpp painter/*.cpp helpers/*.cpp)
 message(${SOURCES})
-add_executable(run run.cpp ${SOURCES})
 add_executable(test test.cpp ${SOURCES})
 add_executable(rlutil_run run_rl.cpp ${SOURCES})
-
-# TODO here replace ncurses to rlutil.h - header only lib
-target_link_libraries(run ${CURSES_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
