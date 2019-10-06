@@ -3,14 +3,6 @@
 #include <iostream>
 #include <random>
 #include <cassert>
-#include <Figure.h>
-#include <LLFigure.h>
-#include <LRFigure.h>
-#include <IFigure.h>
-#include <TFigure.h>
-#include <SFigure.h>
-#include <ZFigure.h>
-#include <SQFigure.h>
 #include <Point.h>
 #include <Board.h>
 #include <rlutil.h>
@@ -30,37 +22,6 @@ void echo() {
 	tcgetattr(STDIN_FILENO, &dt);
 	dt.c_lflag    |= (ICANON | ECHO);
 	tcsetattr(STDIN_FILENO, TCSANOW, &dt);
-}
-
-void generateFigure(std::unique_ptr<Figure>& figure) {
-	uint32_t number = helper::generateNumber(0, 6);
-	switch(number) {
-		case 0:
-			figure.reset(new IFigure);
-			break;
-		case 1:
-			figure.reset(new LLFigure);
-			break;
-		case 2:
-			figure.reset(new LRFigure);
-			break;
-		case 3:
-			figure.reset(new SFigure);
-			break;
-		case 4:
-			figure.reset(new ZFigure);
-			break;
-		case 5:
-			figure.reset(new TFigure);
-			break;
-		case 6:
-			figure.reset(new SQFigure);
-			break;
-		default:
-			std::cerr << "Unsupported type of figure" << std::endl;
-			assert(false);
-			break;
-	}
 }
 
 int main() {
@@ -97,13 +58,18 @@ int main() {
 	
 	const double originTimePeriod = 1.2;
 	double currentTimePeriod = originTimePeriod;
-	generateFigure(figure);
+	helper::generateFigure(figure);
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
 	while(true) {
 		if (ch == 'q')
 			break;
-		generateFigure(nextFigure);
+		helper::generateFigure(nextFigure);
 		nextFigure->setXY(Board::widthBoard + 4, 6);
+		painter.drawRectangle(
+			painter.xOffsetBoard + Board::widthBoard + 4,
+			8,
+			4,
+			2);
 		painter.drawFigure(*nextFigure, false, Board::bufferFreeSymbol);
 		figure->setXY(Board::widthBoard / 2 - 1, 0);
 		noecho();
@@ -170,7 +136,7 @@ int main() {
 			auto end = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = end-start;
 			if (diff.count() > currentTimePeriod) {
-				// // erase prev figure!!!
+				// erase prev figure!!!
 				painter.drawFigure(*figure, false, Board::bufferFreeSymbol);
 				start = std::chrono::system_clock::now();
 				diff.zero();
@@ -197,6 +163,11 @@ int main() {
 					}
 					board.addFigureToBuffer(*figure);
 					painter.drawFigure(*nextFigure, false);
+					painter.drawRectangle(
+						painter.xOffsetBoard + Board::widthBoard + 4,
+						8,
+						4,
+						2);
 					figure = std::move(nextFigure);
 					
 					painter.drawBoard(board);

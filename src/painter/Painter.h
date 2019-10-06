@@ -48,7 +48,7 @@ struct Painter: protected InsidePainter, Singleton<Painter> {
 		uint32_t y,
 		uint32_t width,
 		uint32_t height,
-		char ch = 0,
+		char ch = ' ',
 		uint32_t color = 0,
 		uint32_t textColor = 0) const;
 	void drawHead();

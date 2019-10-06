@@ -164,13 +164,13 @@ void Painter::setXY(uint32_t x, uint32_t y) {
 }
 
 void Painter::drawHead() {
-	const std::string startStr = " T E T R I S ";
 	clearScreen();
+	const std::string startStr = " T E T R I S ";
 	printColoredText(
 		startStr,
 		getWinWidth() / 2 - startStr.size() / 2,
 		getWinHeight() / 2,
-		6,
-		12);
+		0,
+		2);
 }
 
