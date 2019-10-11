@@ -76,3 +76,7 @@ void PainterLocal::drawBoard(const Board &board) const {
 		std::cout << std::endl;
 	}
 }
+
+std::unique_ptr<PainterLocal> PainterLocal::createPainter() {
+	return std::unique_ptr<PainterLocal>(new PainterLocal);
+}

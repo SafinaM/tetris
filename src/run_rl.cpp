@@ -25,18 +25,18 @@ int main() {
 	Board& board = Board::instance();
 	auto start = std::chrono::system_clock::now();
 //	PainterLocal& painter = PainterLocal::instance();
-	PainterLocal painter;
-	painter.hideCursor();
+	std::unique_ptr<PainterLocal> painter = PainterLocal::createPainter();
+	painter->hideCursor();
 	
-	painter.drawHead(" T E T R I S ");
+	painter->drawHead(" T E T R I S ");
 	int ch = getch();
 	
-	painter.setXY(
-		(painter.getWinWidth() - Board::widthBoard) / 2,
-		(painter.getWinHeight() - Board::heightBoard) / 2);
-	painter.clearScreen();
-	painter.drawBoard(board);
-	painter.redrawCounters(board);
+	painter->setXY(
+		(painter->getWinWidth() - Board::widthBoard) / 2,
+		(painter->getWinHeight() - Board::heightBoard) / 2);
+	painter->clearScreen();
+	painter->drawBoard(board);
+	painter->redrawCounters(board);
 	
 	helper::generateFigure(figure);
 	const std::string gameOverStr = " GAME OVER! press Q - to quite! * - to repeate";
@@ -48,47 +48,47 @@ int main() {
 
 		helper::generateFigure(nextFigure);
 		nextFigure->setXY(Board::widthBoard + 4, 6);
-		painter.drawRectangle(
-			painter.xOffsetBoard + Board::widthBoard + 4,
-			painter.yOffsetBoard + 6,
+		painter->drawRectangle(
+			painter->xOffsetBoard + Board::widthBoard + 4,
+			painter->yOffsetBoard + 6,
 			4,
 			2);
 		figure->setXY(Board::widthBoard / 2 - 1, 0);
 		
 		while (true) {
 			bool wasStopped = false;
-			painter.setScreenSize();
+			painter->setScreenSize();
 			if (ch == 'p') {
-				painter.clearScreen();
-				painter.drawHead("Pause! Press any key!");
+				painter->clearScreen();
+				painter->drawHead("Pause! Press any key!");
 				wasStopped = true;
 				ch = getch();
 			}
-			if (!painter.isSizeOk()) {
-				painter.clearScreen();
-				painter.drawHead("SMALL WIN SIZE! Press any key!");
+			if (!painter->isSizeOk()) {
+				painter->clearScreen();
+				painter->drawHead("SMALL WIN SIZE! Press any key!");
 				getch();
 			}
 
-			if (painter.isScreenSizeChanged() && painter.isSizeOk() || wasStopped) {
-				painter.clearScreen();
-				painter.setXY(
-					(painter.getWinWidth() - Board::widthBoard) / 2,
-					(painter.getWinHeight() - Board::heightBoard) / 2);
-				painter.drawBoard(board);
-				painter.redrawCounters(board);
+			if (painter->isScreenSizeChanged() && painter->isSizeOk() || wasStopped) {
+				painter->clearScreen();
+				painter->setXY(
+					(painter->getWinWidth() - Board::widthBoard) / 2,
+					(painter->getWinHeight() - Board::heightBoard) / 2);
+				painter->drawBoard(board);
+				painter->redrawCounters(board);
 				
 				nextFigure->setXY(Board::widthBoard + 4, 6);
-				painter.drawRectangle(
-					painter.xOffsetBoard + Board::widthBoard + 4,
-					painter.yOffsetBoard + 6,
+				painter->drawRectangle(
+					painter->xOffsetBoard + Board::widthBoard + 4,
+					painter->yOffsetBoard + 6,
 					4,
 					2);
 			}
 
 			if (kbhit()) {
 				// erase prev figure!!!
-				painter.drawFigure(*figure, false, Board::bufferFreeSymbol);
+				painter->drawFigure(*figure, false, Board::bufferFreeSymbol);
 				ch = rlutil::getkey();
 				switch (ch) {
 					case 'w':
@@ -128,7 +128,7 @@ int main() {
 			std::chrono::duration<double> diff = end-start;
 			if (diff.count() > Board::currentTimePeriod) {
 				// erase prev figure!!!
-				painter.drawFigure(*figure, false, Board::bufferFreeSymbol);
+				painter->drawFigure(*figure, false, Board::bufferFreeSymbol);
 				start = std::chrono::system_clock::now();
 				diff.zero();
 				if (board.allowMove(Direction::Down, *figure)) {
@@ -136,48 +136,48 @@ int main() {
 				} else {
 					if (figure->getYOffset() <= 0) {
 						// game over
-						painter.clearScreen();
-						painter.drawHead(gameOverStr);
+						painter->clearScreen();
+						painter->drawHead(gameOverStr);
 						ch = getch();
 						if (ch == 'q')
 							break;
 						board.clear();
-						painter.clearScreen();
+						painter->clearScreen();
 						Board::currentTimePeriod = Board::originTimePeriod;
-						painter.drawBoard(board);
-						painter.redrawCounters(board);
+						painter->drawBoard(board);
+						painter->redrawCounters(board);
 						break;
 					}
 					board.addFigureToBuffer(*figure);
-					painter.drawFigure(*nextFigure, false);
-					painter.drawRectangle(
-						painter.xOffsetBoard + Board::widthBoard + 4,
-						painter.yOffsetBoard + 6,
+					painter->drawFigure(*nextFigure, false);
+					painter->drawRectangle(
+						painter->xOffsetBoard + Board::widthBoard + 4,
+						painter->yOffsetBoard + 6,
 						4,
 						2);
 					
 					figure = std::move(nextFigure);
 					
-					painter.drawBoard(board);
+					painter->drawBoard(board);
 					if (board.verifyLines()) {
 						if (board.levelIsChanged()) {
 							Board::currentTimePeriod -= 0.1;
 							Board::backGroundColor = helper::generateNumber(1, 7);
 						}
-						painter.redrawCounters(board);
-						painter.drawBoard(board);
+						painter->redrawCounters(board);
+						painter->drawBoard(board);
 					}
 					break;
 				}
 			}
-			painter.drawFigure(*figure);
-			painter.drawFigure(*nextFigure);
+			painter->drawFigure(*figure);
+			painter->drawFigure(*nextFigure);
 			
 		} // one figure movement
 	}     // main cycle
 	
-	painter.showCursor();
-	painter.clearScreen();
+	painter->showCursor();
+	painter->clearScreen();
 	echo();
 	
 	return 0;
