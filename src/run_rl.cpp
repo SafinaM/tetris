@@ -23,7 +23,8 @@ int main() {
 	std::unique_ptr<Figure> figure;
 	Board& board = Board::instance();
 	auto start = std::chrono::system_clock::now();
-	Painter& painter = Painter::instance();
+//	PainterLocal& painter = PainterLocal::instance();
+	PainterLocal painter;
 	painter.hideCursor();
 	
 	painter.drawHead(" T E T R I S ");

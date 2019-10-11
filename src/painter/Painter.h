@@ -2,11 +2,10 @@
 #include <Board.h>
 #include <PainterImpl.h>
 
-struct Painter: Singleton<Painter> {
-	Painter(token) : m_painter(new PainterImpl) {}
+struct Painter {
+	Painter() : m_painter(new PainterImpl) {}
 	~Painter() = default;
-	void drawFigure(const Figure &figure, bool draw = true, char ch = ' ') const;
-	void drawBoard(const Board &board) const;
+
 	void redrawCounters(const Board& board) noexcept;
 	
 	void printColoredText(
@@ -41,3 +40,9 @@ private:
 	std::unique_ptr<PainterImpl> m_painter;
 };
 
+struct PainterLocal: Painter {
+//	PainterLocal(token) {}
+	~PainterLocal() = default;
+	void drawFigure(const Figure &figure, bool draw = true, char ch = ' ') const;
+	void drawBoard(const Board &board) const;
+};
