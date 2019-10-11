@@ -1,6 +1,7 @@
 #include <thread>
 #include <Board.h>
 #include <Painter.h>
+#include <PainterLocal.h>
 #include <helper.h>
 
 // TODO noecho for windows

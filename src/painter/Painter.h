@@ -1,12 +1,11 @@
 #pragma once
-#include <Board.h>
 #include <PainterImpl.h>
+#include <memory>
 
 struct Painter {
 	Painter() : m_painter(new PainterImpl) {}
 	~Painter() = default;
 
-	void redrawCounters(const Board& board) noexcept;
 	
 	void printColoredText(
 		const std::string &text,
@@ -40,9 +39,3 @@ private:
 	std::unique_ptr<PainterImpl> m_painter;
 };
 
-struct PainterLocal: Painter {
-//	PainterLocal(token) {}
-	~PainterLocal() = default;
-	void drawFigure(const Figure &figure, bool draw = true, char ch = ' ') const;
-	void drawBoard(const Board &board) const;
-};
