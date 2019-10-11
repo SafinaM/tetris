@@ -1,3 +1,6 @@
 [submodule "rlutil"]
 	path = rlutil
 	url = git@github.com:SafinaM/rlutil.git
+[submodule "painter"]
+	path = painter
+	url = git@github.com:SafinaM/Painter.git
