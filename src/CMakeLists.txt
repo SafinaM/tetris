@@ -11,16 +11,19 @@ if(Threads)
     message("Threads found!")
 endif()
 
-include_directories("${CMAKE_SOURCE_DIR}/../rlutil")
 include_directories(figures)
 include_directories(core)
 include_directories(helpers)
-include_directories(painter)
-add_subdirectory("${CMAKE_SOURCE_DIR}/../rlutil" "${CMAKE_BINARY_DIR}/rlutil")
+
+add_subdirectory("${CMAKE_SOURCE_DIR}/../painter" "${CMAKE_BINARY_DIR}/painter")
 
 include_directories(${CURSES_INCLUDE_DIR})
 
-file(GLOB SOURCES figures/*.cpp core/*.cpp painter/*.cpp helpers/*.cpp)
-message(${SOURCES})
-add_executable(test test.cpp ${SOURCES})
+file(GLOB SOURCES figures/*.cpp core/*.cpp helpers/*.cpp)
+
+add_executable(run_test test.cpp ${SOURCES})
 add_executable(run run_rl.cpp ${SOURCES})
+target_include_directories(run PUBLIC "${CMAKE_SOURCE_DIR}/../painter")
+target_include_directories(run_test PUBLIC "${CMAKE_SOURCE_DIR}/../painter")
+target_link_libraries(run Painter)
+target_link_libraries(run_test Painter)
