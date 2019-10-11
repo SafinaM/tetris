@@ -2,7 +2,6 @@
 #include <iostream>
 #include <memory>
 #include <cassert>
-#include <rlutil.h>
 #include <Figure.h>
 #include <LLFigure.h>
 #include <LRFigure.h>
