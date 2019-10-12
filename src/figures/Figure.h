@@ -13,7 +13,7 @@ struct Figure {
 	virtual Orientation getNextOrientationType() const noexcept = 0;
 
 	void setOrientationType(Orientation orientation);
-	virtual ~Figure();
+	virtual ~Figure() = default;
 	void move(Direction direction) noexcept;
 	void setXY(int x, int y) noexcept;
 	int getXOffset() const noexcept;

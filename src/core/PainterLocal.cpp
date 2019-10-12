@@ -24,7 +24,7 @@ void PainterLocal::redrawCounters(const Board& board) noexcept {
 		2);
 }
 
-void PainterLocal::drawFigure(const Figure &figure, bool draw, char symbol) const {
+void PainterLocal::drawFigure(const Figure &figure, bool draw, char symbol) const noexcept {
 	const auto& points = figure.getPoints();
 	assert(!points.empty());
 	const int xOffset = figure.getXOffset();
@@ -53,7 +53,7 @@ void PainterLocal::drawFigure(const Figure &figure, bool draw, char symbol) cons
 	}
 }
 
-void PainterLocal::drawBoard(const Board &board) const {
+void PainterLocal::drawBoard(const Board &board) const noexcept{
 	const auto& buffer = board.buffer;
 	for (uint8_t i = 0; i < Board::heightBoard; ++i) {
 		for (uint8_t j = 0; j < Board::widthBoard; ++j) {
@@ -75,8 +75,4 @@ void PainterLocal::drawBoard(const Board &board) const {
 		}
 		std::cout << std::endl;
 	}
-}
-
-std::unique_ptr<PainterLocal> PainterLocal::createPainter() {
-	return std::unique_ptr<PainterLocal>(new PainterLocal);
 }

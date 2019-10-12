@@ -3,10 +3,6 @@
 #include <rlutil.h>
 #include "Figure.h"
 
-Figure::~Figure() {
-
-}
-
 void Figure::setOrientationType(Orientation orientation) {
 	m_orientation = orientation;
 }
