@@ -17,8 +17,6 @@ include_directories(helpers)
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/../painter" "${CMAKE_BINARY_DIR}/painter")
 
-include_directories(${CURSES_INCLUDE_DIR})
-
 file(GLOB SOURCES figures/*.cpp core/*.cpp helpers/*.cpp)
 
 add_executable(run_test test.cpp ${SOURCES})
