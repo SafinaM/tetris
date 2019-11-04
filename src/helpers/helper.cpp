@@ -1,5 +1,5 @@
 #include <random>
-#include <Figure.h>
+#include <FigureLocal.h>
 #include <IFigure.h>
 #include <LLFigure.h>
 #include <LRFigure.h>
@@ -7,7 +7,7 @@
 #include <ZFigure.h>
 #include <TFigure.h>
 #include <SQFigure.h>
-#include <Figure.h>
+#include <FigureLocal.h>
 #include "helper.h"
 #include <iostream>
 #include <cassert>
@@ -19,7 +19,7 @@ namespace helper {
 		return distribution(rd);
 	}
 	
-	void generateFigure(std::unique_ptr<Figure>& figure) {
+	void generateFigure(std::unique_ptr<FigureLocal>& figure) {
 		uint32_t number = helper::generateNumber(0, 6);
 		switch(number) {
 			case 0:

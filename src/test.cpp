@@ -2,7 +2,7 @@
 #include <iostream>
 #include <memory>
 #include <cassert>
-#include <Figure.h>
+#include <FigureLocal.h>
 #include <LLFigure.h>
 #include <LRFigure.h>
 #include <random>
@@ -27,8 +27,8 @@ int main() {
 	}
 	
 	Board& board = Board::instance();
-	std::unique_ptr<Figure> figureLL(new LLFigure);
-	std::unique_ptr<Figure> figureLR(new LRFigure);
+	std::unique_ptr<FigureLocal> figureLL(new LLFigure);
+	std::unique_ptr<FigureLocal> figureLR(new LRFigure);
 	assert(figureLL);
 	assert(figureLR);
 	figureLL->move(Direction::Down);

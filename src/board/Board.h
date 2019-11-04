@@ -6,7 +6,7 @@
 #include <vector>
 
 #include <Singletone.h>
-#include <Figure.h>
+#include <FigureLocal.h>
 
 struct Board final: Singleton<Board> {
 
@@ -26,7 +26,7 @@ struct Board final: Singleton<Board> {
 	Board(token) {
 	}
 	~Board() {}
-	void addFigureToBuffer(const Figure& figure);
+	void addFigureToBuffer(const FigureLocal& figure);
 	void debugPrint() const;
 	bool verifyLines();
 	// for debug
@@ -35,8 +35,8 @@ struct Board final: Singleton<Board> {
 	// public for tests
 	bool verifyLine(uint32_t numY);
 	
-	bool allowMove(Direction direction, const Figure &figure) const;
-	bool allowRotate(const Figure &figure) const;
+	bool allowMove(Direction direction, const FigureLocal &figure) const;
+	bool allowRotate(const FigureLocal &figure) const;
 	
 	void clear();
 	std::string getCountOfLinesStr() const noexcept;

@@ -24,7 +24,7 @@ void PainterLocal::redrawCounters(const Board& board) noexcept {
 		2);
 }
 
-void PainterLocal::drawFigure(const Figure &figure, bool draw, char symbol) const noexcept {
+void PainterLocal::drawFigure(const FigureLocal &figure, bool draw, char symbol) const noexcept {
 	const auto& points = figure.getPoints();
 	assert(!points.empty());
 	const int xOffset = figure.getXOffset();

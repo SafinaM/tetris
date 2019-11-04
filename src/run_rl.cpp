@@ -20,8 +20,8 @@ void echo() {
 }
 
 int main() {
-	std::unique_ptr<Figure> nextFigure;
-	std::unique_ptr<Figure> figure;
+	std::unique_ptr<FigureLocal> nextFigure;
+	std::unique_ptr<FigureLocal> figure;
 	Board& board = Board::instance();
 	auto start = std::chrono::system_clock::now();
 	PainterLocal& painter = PainterLocal::instance();

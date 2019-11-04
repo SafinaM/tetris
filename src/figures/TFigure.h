@@ -1,10 +1,10 @@
 #pragma once
-#include "Figure.h"
+#include "FigureLocal.h"
 #include "enums.h"
 #include <vector>
 #include <cstdint>
 
-struct TFigure : Figure {
+struct TFigure : FigureLocal {
 	TFigure();
 	void setNextPoints();
 	std::vector<std::vector<uint8_t>> getPoints(Orientation orientation) const;

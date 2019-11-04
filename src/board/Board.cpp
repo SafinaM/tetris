@@ -16,7 +16,7 @@ uint32_t Board::backGroundColor = 6;
 double Board::currentTimePeriod = originTimePeriod;
 
 
-void Board::addFigureToBuffer(const Figure& figure) {
+void Board::addFigureToBuffer(const FigureLocal& figure) {
 	const auto& points = figure.getPoints();
 	int xOffset = figure.getXOffset();
 	int yOffset = figure.getYOffset();
@@ -108,7 +108,7 @@ void Board::setPoint(uint32_t x, uint32_t y, uint32_t value) {
 	buffer[y][x] = value;
 }
 
-bool Board::allowRotate(const Figure &figure) const {
+bool Board::allowRotate(const FigureLocal &figure) const {
 	Orientation orientation = figure.getNextOrientationType();
 	auto points = figure.getPoints(orientation);
 	uint32_t xOffset = figure.getXOffset();
@@ -153,7 +153,7 @@ bool Board::isCrossedFigureWithWalls(
 	return true;
 }
 
-bool Board::allowMove(Direction direction, const Figure &figure) const {
+bool Board::allowMove(Direction direction, const FigureLocal &figure) const {
 	const auto& points = figure.getPoints();
 	int xOffset = figure.getXOffset();
 	int yOffset = figure.getYOffset();
