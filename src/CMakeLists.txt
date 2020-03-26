@@ -7,8 +7,10 @@ set(CMAKE_CXX_EXTENSIONS ON) #...without compiler extensions like gnu++11
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(Threads)
-if(Threads)
-    message("Threads found!")
+if(Threads_FOUND)
+    message("Threads are found!")
+else()
+    message(FATAL_ERROR "Threads are not found!")
 endif()
 
 include_directories(figures)

@@ -1,14 +1,13 @@
 #include "ZFigure.h"
 #include <iostream>
 
-ZFigure::ZFigure() {
-	m_orientation = Orientation::First_0;
+ZFigure::ZFigure() : FigureLocal(Orientation::First_0) {
 	points = getPoints(m_orientation);
 	m_Color = 7; // Magenta
 }
 
 void ZFigure::setNextPoints() {
-	setOrientationType(getNextOrientationType());
+	setOrientationTypeAndDirection(getNextOrientationType());
 	points = getPoints(m_orientation);
 }
 

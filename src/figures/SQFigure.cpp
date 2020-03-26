@@ -1,14 +1,13 @@
 #include "SQFigure.h"
 #include <iostream>
 
-SQFigure::SQFigure() {
-	m_orientation = Orientation::First_0;
+SQFigure::SQFigure() : FigureLocal(Orientation::First_0) {
 	points = getPoints(m_orientation);
 	m_Color = 5; // blue
 }
 
 void SQFigure::setNextPoints() {
-	setOrientationType(getNextOrientationType());
+	setOrientationTypeAndDirection(getNextOrientationType());
 	points = getPoints(m_orientation);
 }
 

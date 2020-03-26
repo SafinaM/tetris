@@ -2,14 +2,13 @@
 #include <iostream>
 #include <cassert>
 
-IFigure::IFigure() {
-	m_orientation = Orientation::Third_180;
+IFigure::IFigure() : FigureLocal(Orientation::Third_180) {
 	points = getPoints(m_orientation);
 	m_Color = 4; // Red
 }
 
 void IFigure::setNextPoints() {
-	setOrientationType(getNextOrientationType());
+	setOrientationTypeAndDirection(getNextOrientationType());
 	points = getPoints(m_orientation);
 }
 

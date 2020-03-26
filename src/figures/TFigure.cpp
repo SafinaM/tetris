@@ -1,14 +1,13 @@
 #include "TFigure.h"
 #include <iostream>
 
-TFigure::TFigure() {
-	m_orientation = Orientation::First_0;
+TFigure::TFigure() : FigureLocal(Orientation::First_0) {
 	points = getPoints(m_orientation);
 	m_Color = 1; // Blue
 }
 
 void TFigure::setNextPoints() {
-	setOrientationType(getNextOrientationType());
+	setOrientationTypeAndDirection(getNextOrientationType());
 	points = getPoints(m_orientation);
 }
 

@@ -1,14 +1,13 @@
 #include "LRFigure.h"
 #include <iostream>
 
-LRFigure::LRFigure() {
-	m_orientation = Orientation::Second_90;
+LRFigure::LRFigure() : FigureLocal(Orientation::Second_90) {
 	points = getPoints(m_orientation);
 	m_Color = 2; // Green
 }
 
 void LRFigure::setNextPoints() {
-	setOrientationType(getNextOrientationType());
+	setOrientationTypeAndDirection(getNextOrientationType());
 	points = getPoints(m_orientation);
 }
 

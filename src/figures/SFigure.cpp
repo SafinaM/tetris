@@ -1,13 +1,12 @@
 #include "SFigure.h"
 
-SFigure::SFigure() {
-	m_orientation = Orientation::First_0;
+SFigure::SFigure(): FigureLocal(Orientation::First_0) {
 	points = getPoints(m_orientation);
 	m_Color = 6; // Magenta
 }
 
 void SFigure::setNextPoints() {
-	setOrientationType(getNextOrientationType());
+	setOrientationTypeAndDirection(getNextOrientationType());
 	points = getPoints(m_orientation);
 }
 
