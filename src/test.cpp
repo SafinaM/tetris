@@ -26,7 +26,7 @@ int main() {
 		assert(it.second / (numberOfTicks / upLimit) < 0.1);
 	}
 	
-	Board& board = Board::instance();
+	Board board(10, 20);
 	std::unique_ptr<FigureLocal> figureLL(new LLFigure);
 	std::unique_ptr<FigureLocal> figureLR(new LRFigure);
 	assert(figureLL);
@@ -66,7 +66,10 @@ int main() {
 	assert(!board.verifyLine(7));
 	assert(board.verifyLines());
 	// after checking we do not have filled lines
-	for (auto i = 0; i < Board::heightBoard; ++i) {
+	const uint32_t height = board.getHeight();
+	
+	uint32_t getHeight();
+	for (auto i = 0; i < height; ++i) {
 		assert(!board.verifyLine(i));
 	}
 	std::cout << std::endl;

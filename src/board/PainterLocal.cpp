@@ -2,23 +2,24 @@
 #include <cassert>
 
 void PainterLocal::redrawCounters(const Board& board) noexcept {
+	const uint32_t widthBoard = board.getWidth();
 	printColoredText(
 		board.getCountOfLinesStr(),
-		xOffsetBoard + Board::widthBoard + 4,
+		xOffsetBoard + widthBoard + 4,
 		yOffsetBoard,
 		0,
 		2);
 	
 	printColoredText(
 		board.getLevelStr(),
-		xOffsetBoard + Board::widthBoard + 4,
+		xOffsetBoard + widthBoard + 4,
 		yOffsetBoard + 3,
 		0,
 		2);
 	
 	printColoredText(
 		"Q - quite, P - pause",
-		xOffsetBoard + Board::widthBoard + 4,
+		xOffsetBoard + widthBoard + 4,
 		yOffsetBoard + 9,
 		0,
 		2);
@@ -55,8 +56,10 @@ void PainterLocal::drawFigure(const FigureLocal &figure, bool draw, char symbol)
 
 void PainterLocal::drawBoard(const Board &board) const noexcept{
 	const auto& buffer = board.buffer;
-	for (uint8_t i = 0; i < Board::heightBoard; ++i) {
-		for (uint8_t j = 0; j < Board::widthBoard; ++j) {
+	const uint32_t heightBoard = board.getHeight();
+	const uint32_t widghtBoard = board.getWidth();
+	for (uint8_t i = 0; i < heightBoard; ++i) {
+		for (uint8_t j = 0; j < widghtBoard; ++j) {
 			// 0 - is Black
 			if (!buffer[i][j])
 				drawPoint(

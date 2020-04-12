@@ -9,7 +9,7 @@
 #include <FigureLocal.h>
 #include <BoardBase.h>
 
-struct Board final: Singleton<Board>, BoardBase {
+struct Board : BoardBase {
 	constexpr static uint32_t textColor = 15;
 	constexpr static uint32_t bufferFreeSymbol = '.';
 	constexpr static uint32_t bufferBusySymbol = '#';
@@ -19,7 +19,7 @@ struct Board final: Singleton<Board>, BoardBase {
 	static uint32_t backGroundColor;
 	static double currentTimePeriod;
 	
-	Board(token) {
+	Board(uint32_t width, uint32_t height) : BoardBase(width, height) {
 	}
 	~Board() = default;
 	void addFigureToBuffer(const FigureLocal& figure);
@@ -35,11 +35,10 @@ struct Board final: Singleton<Board>, BoardBase {
 	bool levelIsChanged();
 	
 private:
-	int m_minNoneZeroY = heightBoard;
+	int m_minNoneZeroY = m_heightBoard;
 	uint32_t m_nErasedLines = 0;
 	uint32_t m_level = 0;
 	bool m_levelIsChanged = false;
 	void swapLines(uint32_t i, uint32_t j);
 	void resetLine(uint32_t numY);
 };
-

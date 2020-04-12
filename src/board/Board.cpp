@@ -29,7 +29,7 @@ void Board::addFigureToBuffer(const FigureLocal& figure) {
 bool Board::verifyLines() {
 	bool foundAtLeastOneFilledLine = false;
 	m_levelIsChanged = false;
-	for (auto i = m_minNoneZeroY; i < heightBoard; ++i) {
+	for (auto i = m_minNoneZeroY; i < m_heightBoard; ++i) {
 		// erase full line and insert empty line at the begin of vector - not effective way
 		if (verifyLine(i)) {
 			++m_nErasedLines;
@@ -69,8 +69,8 @@ uint32_t Board::getNumberOfErasedLines() const noexcept {
 }
 
 bool Board::verifyLine(uint32_t numY) {
-	assert(numY >= 0 && numY < heightBoard);
-		for (auto j = 0; j < widthBoard; ++j) {
+	assert(numY >= 0 && numY < m_heightBoard);
+		for (auto j = 0; j < m_widthBoard; ++j) {
 			if (!buffer[numY][j])
 				return false;
 	}
@@ -86,7 +86,7 @@ void Board::swapLines(uint32_t i, uint32_t j) {
 }
 
 void Board::resetLine(uint32_t numY) {
-	for (uint32_t j = 0; j < widthBoard; ++j) {
+	for (uint32_t j = 0; j < m_widthBoard; ++j) {
 		buffer[numY][j] = 0;
 	}
 }

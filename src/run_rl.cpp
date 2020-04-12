@@ -22,17 +22,18 @@ void echo() {
 int main() {
 	std::unique_ptr<FigureLocal> nextFigure;
 	std::unique_ptr<FigureLocal> figure;
-	Board& board = Board::instance();
+	Board board(10, 20);
 	auto start = std::chrono::system_clock::now();
 	PainterLocal& painter = PainterLocal::instance();
 	painter.hideCursor();
 	
 	painter.drawHead(" T E T R I S ");
 	int ch = getch();
-	
+	const uint32_t boardWidth = board.getWidth();
+	const uint32_t boardHeight = board.getHeight();
 	painter.setXY(
-		(painter.getWinWidth() - Board::widthBoard) / 2,
-		(painter.getWinHeight() - Board::heightBoard) / 2);
+		(painter.getWinWidth() - boardWidth) / 2,
+		(painter.getWinHeight() - boardHeight) / 2);
 	painter.clearScreen();
 	painter.drawBoard(board);
 	painter.redrawCounters(board);
@@ -46,13 +47,13 @@ int main() {
 			break;
 
 		helper::generateFigure(nextFigure);
-		nextFigure->setXY(Board::widthBoard + 4, 6);
+		nextFigure->setXY(boardWidth + 4, 6);
 		painter.drawRectangle(
-			painter.xOffsetBoard + Board::widthBoard + 4,
+			painter.xOffsetBoard + boardWidth + 4,
 			painter.yOffsetBoard + 6,
 			4,
 			2);
-		figure->setXY(Board::widthBoard / 2 - 1, 0);
+		figure->setXY(boardWidth / 2 - 1, 0);
 		
 		while (true) {
 			bool wasStopped = false;
@@ -72,14 +73,14 @@ int main() {
 			if (painter.isScreenSizeChanged() && painter.isSizeOk() || wasStopped) {
 				painter.clearScreen();
 				painter.setXY(
-					(painter.getWinWidth() - Board::widthBoard) / 2,
-					(painter.getWinHeight() - Board::heightBoard) / 2);
+					(painter.getWinWidth() - boardWidth) / 2,
+					(painter.getWinHeight() - boardHeight) / 2);
 				painter.drawBoard(board);
 				painter.redrawCounters(board);
 				
-				nextFigure->setXY(Board::widthBoard + 4, 6);
+				nextFigure->setXY(boardWidth + 4, 6);
 				painter.drawRectangle(
-					painter.xOffsetBoard + Board::widthBoard + 4,
+					painter.xOffsetBoard + boardWidth + 4,
 					painter.yOffsetBoard + 6,
 					4,
 					2);
@@ -150,7 +151,7 @@ int main() {
 					board.addFigureToBuffer(*figure);
 					painter.drawFigure(*nextFigure, false);
 					painter.drawRectangle(
-						painter.xOffsetBoard + Board::widthBoard + 4,
+						painter.xOffsetBoard + boardWidth + 4,
 						painter.yOffsetBoard + 6,
 						4,
 						2);
