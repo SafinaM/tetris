@@ -3,7 +3,7 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
-#include <Figure.h>
+#include "Figure.h"
 #include "enums.h"
 
 struct FigureLocal : Figure {
