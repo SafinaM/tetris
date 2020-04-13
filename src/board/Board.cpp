@@ -97,8 +97,9 @@ bool Board::allowRotate(const FigureLocal &figure) const {
 	uint32_t xOffset = figure.getXOffset();
 	uint32_t yOffset = figure.getYOffset();
 	
+	if (!isCrossedFigureWithWalls(points, xOffset, yOffset))
+		return false;
 	return
-		isCrossedFigureWithBuffer(points, xOffset, yOffset) &&
-		isCrossedFigureWithWalls(points, xOffset, yOffset);
+		isCrossedFigureWithBuffer(points, xOffset, yOffset);
 }
 
