@@ -13,6 +13,9 @@ void Board::addFigureToBuffer(const FigureLocal& figure) {
 	const auto& points = figure.getPoints();
 	int xOffset = figure.getXOffset();
 	int yOffset = figure.getYOffset();
+	
+	assert(!isCrossedFigureWithWalls(points, xOffset, yOffset));
+	
 	for (auto i = 0; i < points.size(); ++i) {
 		for (auto j = 0; j < points[0].size(); ++j) {
 			if (points[i][j]) {
@@ -97,9 +100,10 @@ bool Board::allowRotate(const FigureLocal &figure) const {
 	uint32_t xOffset = figure.getXOffset();
 	uint32_t yOffset = figure.getYOffset();
 	
-	if (!isCrossedFigureWithWalls(points, xOffset, yOffset))
+	if (isCrossedFigureWithWalls(points, xOffset, yOffset))
 		return false;
+	
 	return
-		isCrossedFigureWithBuffer(points, xOffset, yOffset);
+		!isCrossedFigureWithBuffer(points, xOffset, yOffset);
 }
 

@@ -7,6 +7,7 @@
 #include <LRFigure.h>
 #include <random>
 #include <unordered_map>
+#include <SQFigure.h>
 
 int main() {
 	std::random_device generator;
@@ -28,6 +29,7 @@ int main() {
 	
 	Board board(10, 20);
 	std::unique_ptr<FigureLocal> figureLL(new LLFigure);
+	std::unique_ptr<FigureLocal> figureSQ(new SQFigure);
 	std::unique_ptr<FigureLocal> figureLR(new LRFigure);
 	assert(figureLL);
 	assert(figureLR);
@@ -46,6 +48,7 @@ int main() {
 	assert(figureLR->getYOffset() == 3);
 	
 	board.addFigureToBuffer(*figureLL);
+	board.debugPrint();
 	
 	figureLL->setXY(3, 3);
 	assert(figureLL->getXOffset() == 3);
@@ -75,11 +78,21 @@ int main() {
 	std::cout << std::endl;
 	figureLL->setNextPoints();
 	figureLL->setXY(-1, 1);
+//	board.addFigureToBuffer(*figureLL);
+//	board.debugPrint();
 	assert(board.allowMove(Direction::Right, *figureLL) == true);
+	
 	assert(board.allowMove(Direction::Left, *figureLL) == false);
 	assert(board.allowMove(Direction::Down, *figureLL) == true);
 	
 	figureLL->setXY(0, 1);
+	assert(board.allowRotate(*figureLL) == true);
+	
+	figureLL->setXY(7, 1);
+	
+	assert(board.allowMove(Direction::Right, *figureLL) == false);
+	assert(board.allowMove(Direction::Left, *figureLL) == true);
+	assert(board.allowMove(Direction::Down, *figureLL) == true);
 	assert(board.allowRotate(*figureLL) == true);
 	
 	figureLL->setXY(7, 1);
@@ -139,8 +152,23 @@ int main() {
 	assert(board.allowMove(Direction::Left, *figureLL) == false);
 	assert(board.allowMove(Direction::Down, *figureLL) == false);
 	assert(board.allowRotate(*figureLL) == false);
-	board.addFigureToBuffer(*figureLL);
-	board.debugPrint();
+	
+	figureSQ->setXY(2, 18);
+	assert(board.allowMove(Direction::Right, *figureSQ) == true);
+	assert(board.allowMove(Direction::Left, *figureSQ) == true);
+	assert(board.allowMove(Direction::Down, *figureSQ) == false);
+	assert(board.allowRotate(*figureSQ) == true);
+	
+	
+	figureSQ->setXY(2, 21);
+	assert(board.allowMove(Direction::Right, *figureSQ) == false);
+	assert(board.allowMove(Direction::Left, *figureSQ) == false);
+	assert(board.allowMove(Direction::Down, *figureSQ) == false);
+	assert(board.allowRotate(*figureSQ) == false);
+	
+	// it should not be added because out of range
+	//	board.addFigureToBuffer(*figureSQ);
+	//	board.debugPrint();
 	
 	std::cout << "\nLRFigureTest\n"<< std::endl;
 	
