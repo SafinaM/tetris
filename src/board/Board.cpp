@@ -104,6 +104,6 @@ bool Board::allowRotate(const FigureLocal &figure) const {
 		return false;
 	
 	return
-		!areCrossedBuffers(points, buffer, xOffset, yOffset);
+		!isCrossedFigureWithBuffer(points, xOffset, yOffset);
 }
 
